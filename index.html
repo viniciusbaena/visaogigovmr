@@ -12,7 +12,6 @@
 html,body{height:100%;overflow-x:hidden}
 body{background:#f0f2f5}
 
-/* LOGIN / REGISTER */
 .auth-screen{
   display:none;
   position:fixed;
@@ -61,7 +60,6 @@ body{background:#f0f2f5}
 .auth-box .link{color:#2980b9;font-size:13px;margin-top:15px;cursor:pointer;text-decoration:underline}
 .auth-box .error{color:#e74c3c;font-size:13px;margin-top:10px;min-height:18px}
 
-/* HEADER */
 .header{
   background:linear-gradient(135deg,#1a5276,#2980b9);
   color:#fff;
@@ -104,21 +102,14 @@ body{background:#f0f2f5}
 }
 .header-user span{opacity:0.9}
 
-/* CONTAINER */
-.container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:20px 15px;
-}
+.container{max-width:1100px;margin:0 auto;padding:20px 15px}
 
-/* SCREENS */
 .app-screen{
   display:none;
   min-height:calc(100vh - 80px);
 }
 .app-screen.active{display:block}
 
-/* DASHBOARD */
 .dashboard-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -144,7 +135,6 @@ body{background:#f0f2f5}
 .dashboard-card h3{color:#2c3e50;font-size:18px;margin-bottom:8px}
 .dashboard-card p{color:#7f8c8d;font-size:13px}
 
-/* UPLOAD */
 .upload-form{
   background:#fff;
   border-radius:14px;
@@ -184,7 +174,6 @@ body{background:#f0f2f5}
 }
 @media(max-width:600px){.form-row{grid-template-columns:1fr}}
 
-/* Checkbox */
 .checkbox-group{
   display:flex;
   align-items:center;
@@ -209,7 +198,18 @@ body{background:#f0f2f5}
   margin:0;
 }
 
-/* Photo preview */
+/* Compression info */
+.compression-info{
+  background:#e8f6f3;
+  border:1px solid #1abc9c;
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:15px;
+  font-size:13px;
+  color:#16a085;
+}
+.compression-info strong{display:block;margin-bottom:4px}
+
 .photo-preview{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
@@ -258,7 +258,6 @@ body{background:#f0f2f5}
   text-overflow:ellipsis;
 }
 
-/* BUTTONS */
 .btn-primary{
   background:linear-gradient(135deg,#2980b9,#1a5276);
   color:#fff;
@@ -305,7 +304,6 @@ body{background:#f0f2f5}
 .btn-edit{background:#f39c12;color:#fff}
 .btn-edit:hover{background:#d68910}
 
-/* VISTORIAS */
 .vistorias-header{
   display:flex;
   justify-content:space-between;
@@ -335,7 +333,6 @@ body{background:#f0f2f5}
   border-color:#2980b9;
 }
 
-/* Tree */
 .tree-item{
   background:#fff;
   border-radius:10px;
@@ -374,7 +371,6 @@ body{background:#f0f2f5}
 .tree-item-actions{display:flex;gap:6px}
 .tree-children{padding-left:25px;margin-top:10px}
 
-/* Breadcrumb */
 .breadcrumb{
   display:flex;
   align-items:center;
@@ -391,7 +387,6 @@ body{background:#f0f2f5}
 .breadcrumb a:hover{text-decoration:underline}
 .breadcrumb span{color:#7f8c8d;font-size:14px}
 
-/* Photo grid */
 .photo-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
@@ -426,7 +421,6 @@ body{background:#f0f2f5}
   padding:0 10px 10px;
 }
 
-/* DOWNLOAD */
 .download-filters{
   background:#fff;
   border-radius:14px;
@@ -474,7 +468,6 @@ body{background:#f0f2f5}
 }
 .download-actions.show{display:flex}
 
-/* PROFILE */
 .profile-card{
   background:#fff;
   border-radius:14px;
@@ -497,7 +490,6 @@ body{background:#f0f2f5}
 .profile-section h3{color:#555;font-size:16px;margin-bottom:12px}
 .profile-section p{color:#7f8c8d;font-size:13px;margin-bottom:12px}
 
-/* MODAL */
 .modal-overlay{
   position:fixed;
   top:0;left:0;right:0;bottom:0;
@@ -533,7 +525,6 @@ body{background:#f0f2f5}
   margin-top:15px;
 }
 
-/* TOAST */
 .toast{
   position:fixed;
   bottom:20px;
@@ -553,7 +544,6 @@ body{background:#f0f2f5}
 .toast.success{background:#27ae60}
 .toast.error{background:#e74c3c}
 
-/* LOADING */
 .loading{
   text-align:center;
   padding:40px;
@@ -570,7 +560,6 @@ body{background:#f0f2f5}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* EMPTY STATE */
 .empty-state{
   text-align:center;
   padding:50px 20px;
@@ -584,7 +573,6 @@ body{background:#f0f2f5}
 .empty-state h3{font-size:18px;color:#555;margin-bottom:8px}
 .empty-state p{font-size:14px}
 
-/* PROGRESS BAR */
 .progress-bar{
   width:100%;
   height:8px;
@@ -602,7 +590,6 @@ body{background:#f0f2f5}
   transition:width 0.3s;
 }
 
-/* RESPONSIVE */
 @media(max-width:600px){
   .header-logo h1{font-size:16px}
   .header-user{flex-direction:column;gap:4px;text-align:center}
@@ -614,7 +601,6 @@ body{background:#f0f2f5}
 </head>
 <body>
 
-<!-- HEADER -->
 <div id="header" class="header">
   <div class="header-top">
     <div class="header-logo">
@@ -636,7 +622,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- LOGIN -->
 <div id="loginScreen" class="auth-screen active">
   <div class="auth-box">
     <div class="eye">👁️</div>
@@ -650,7 +635,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- REGISTER -->
 <div id="registerScreen" class="auth-screen">
   <div class="auth-box">
     <div class="eye">👁️</div>
@@ -666,7 +650,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboardScreen" class="app-screen">
   <div class="container">
     <div class="dashboard-grid">
@@ -689,11 +672,15 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- UPLOAD -->
 <div id="uploadScreen" class="app-screen">
   <div class="container">
     <div class="upload-form">
       <h2>📤 Fazer Upload de Fotos</h2>
+
+      <div class="compression-info">
+        <strong>🗜️ Compactação Automática Ativada</strong>
+        As fotos serão compactadas automaticamente para até 1280px de largura, mantendo a qualidade e reduzindo o tamanho do arquivo em até 80%.
+      </div>
 
       <div class="form-group">
         <label>Empregado *</label>
@@ -762,7 +749,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- VISTORIAS -->
 <div id="vistoriasScreen" class="app-screen">
   <div class="container">
     <div class="vistorias-header">
@@ -783,7 +769,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- DOWNLOAD -->
 <div id="downloadScreen" class="app-screen">
   <div class="container">
     <div class="vistorias-header">
@@ -795,7 +780,7 @@ body{background:#f0f2f5}
       <div class="form-row">
         <div class="form-group">
           <label>Empregado</label>
-          <select id="dlEmployee" onchange="onDlEmployeeChange()"><option value="">Todos</option></select>
+          <select id="dlEmployee" onchange="renderDownload()"><option value="">Meu usuário</option></select>
         </div>
         <div class="form-group">
           <label>Cidade</label>
@@ -821,7 +806,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- PROFILE -->
 <div id="profileScreen" class="app-screen">
   <div class="container">
     <div class="profile-card">
@@ -852,7 +836,6 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- MODALS -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <h3 id="modalTitle">Título</h3>
@@ -861,13 +844,10 @@ body{background:#f0f2f5}
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- JAVASCRIPT -->
 <script>
 
-// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyBycTYSM1jgjS2zm4qaGnjDtH6JRMiw_ps",
   authDomain: "visao-gigovmr.firebaseapp.com",
@@ -879,6 +859,9 @@ const firebaseConfig = {
 
 const CLOUDINARY_CLOUD = 'olfeaqsz';
 const CLOUDINARY_UPLOAD_PRESET = 'visao_gigovmr_unsigned';
+const MAX_WIDTH = 1280;
+const MAX_HEIGHT = 1280;
+const JPEG_QUALITY = 0.85;
 
 let app, auth, db;
 let currentUser = null;
@@ -1063,6 +1046,51 @@ function onObraChange(){
   }
 }
 
+// ===== COMPRESSÃO DE FOTOS =====
+function compressImage(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => {
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    img.onload = () => {
+      let w = img.width;
+      let h = img.height;
+
+      if(w > MAX_WIDTH || h > MAX_HEIGHT){
+        const ratio = Math.min(MAX_WIDTH / w, MAX_HEIGHT / h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+
+      canvas.toBlob(blob => {
+        const compressedFile = new File([blob], file.name, {
+          type: 'image/jpeg',
+          lastModified: file.lastModified
+        });
+        resolve({
+          file: compressedFile,
+          originalSize: file.size,
+          compressedSize: blob.size,
+          ratio: Math.round((1 - blob.size / file.size) * 100)
+        });
+      }, 'image/jpeg', JPEG_QUALITY);
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 function previewPhotos(){
   const input = document.getElementById('uploadPhotos');
   const preview = document.getElementById('photoPreview');
@@ -1163,14 +1191,20 @@ async function submitUpload(){
 
   const total = uploadFiles.length;
   let done = 0;
+  let totalSaved = 0;
 
   for(const file of uploadFiles){
     try {
+      // Compressão
+      const compressed = await compressImage(file);
+      totalSaved += (compressed.originalSize - compressed.compressedSize);
+
       let metadata = null;
       if(includeMetadata){
         metadata = await extractMetadata(file);
       }
-      const url = await uploadToCloudinary(file);
+
+      const url = await uploadToCloudinary(compressed.file);
       await db.collection('photos').add({
         cidadeId: cidadeId,
         cidade: cidade,
@@ -1181,6 +1215,9 @@ async function submitUpload(){
         notes: notes,
         url: url,
         filename: file.name,
+        originalSize: compressed.originalSize,
+        compressedSize: compressed.compressedSize,
+        compressionRatio: compressed.ratio,
         createdBy: currentUser.uid,
         createdByName: currentUserData.name,
         createdAt: now(),
@@ -1196,7 +1233,8 @@ async function submitUpload(){
 
   progress.classList.remove('show');
   fill.style.width = '0%';
-  showToast(done + ' foto(s) enviada(s) com sucesso!','success');
+  const savedMB = (totalSaved / 1024 / 1024).toFixed(1);
+  showToast(done + ' foto(s) enviada(s)! Economia: ' + savedMB + ' MB','success');
   clearUpload();
 }
 
@@ -1487,7 +1525,8 @@ async function loadDownloadFilters(){
   const employeeSel = document.getElementById('dlEmployee');
   const cidadeSel = document.getElementById('dlCidade');
 
-  employeeSel.innerHTML = '<option value="">Todos</option>';
+  // Por padrao: mostra apenas fotos do proprio empregado
+  employeeSel.innerHTML = '<option value="__me__">👤 Meu usuário</option>';
   cidadeSel.innerHTML = '<option value="">Todas</option>';
 
   const empSnap = await db.collection('photos').get();
@@ -1499,17 +1538,17 @@ async function loadDownloadFilters(){
     if(data.cidade) cidades.add(data.cidade);
   });
 
+  // Adicionar outros empregados no dropdown
   Array.from(employees).sort().forEach(e => {
-    employeeSel.innerHTML += '<option value="' + escapeHtml(e) + '">' + escapeHtml(e) + '</option>';
+    if(e !== currentUserData.name) {
+      employeeSel.innerHTML += '<option value="' + escapeHtml(e) + '">' + escapeHtml(e) + '</option>';
+    }
   });
+
   Array.from(cidades).sort().forEach(c => {
     cidadeSel.innerHTML += '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
   });
 
-  renderDownload();
-}
-
-async function onDlEmployeeChange(){
   renderDownload();
 }
 
@@ -1531,9 +1570,15 @@ async function onDlCidadeChange(){
 
 async function renderDownload(){
   const content = document.getElementById('downloadContent');
-  const employee = document.getElementById('dlEmployee').value;
+  const employeeSel = document.getElementById('dlEmployee');
   const cidade = document.getElementById('dlCidade').value;
   const date = document.getElementById('dlDate').value;
+
+  // Se "__me__" selecionado, filtra pelo nome do usuario logado
+  let employee = employeeSel.value;
+  if(employee === '__me__'){
+    employee = currentUserData.name;
+  }
 
   content.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Carregando...</div>';
 
