@@ -3,410 +3,251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VisãoGIGOVMR - Repositório de Fotos</title>
+<title>VisaoGIGOVMR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
-:root {
-  --primary: #1a5fb4; --primary-dark: #104a8e; --primary-light: #e8f0fe;
-  --secondary: #26a269; --danger: #c01c28; --warning: #ff7800;
-  --bg: #f6f8fc; --card: #ffffff; --text: #1c1c1c; --text-secondary: #5e5e5e;
-  --border: #dadce0; --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-  --radius: 12px; --radius-sm: 8px;
+:root{--p:#1a5fb4;--pd:#104a8e;--pl:#e8f0fe;--s:#26a269;--d:#c01c28;--bg:#f6f8fc;--c:#fff;--t:#1c1c1c;--ts:#5e5e5e;--b:#dadce0;--sh:0 1px 3px rgba(0,0,0,0.1);--shl:0 10px 15px -3px rgba(0,0,0,0.1);--r:12px;--rs:8px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);line-height:1.5;min-height:100vh}
+.hidden{display:none!important}
+.hdr{background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);color:#fff;position:sticky;top:0;z-index:100;box-shadow:var(--shl)}
+.ht{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:12px}
+.hb{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.hb i{font-size:28px;flex-shrink:0}
+.hbt{min-width:0}
+.hbt h1{font-size:1.1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbt p{font-size:.7rem;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ha{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.hbtn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 14px;border-radius:var(--rs);cursor:pointer;font-size:.85rem;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,.25)}
+.hb2{background:rgba(0,0,0,.2);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.75rem}
+.hu{display:flex;align-items:center;gap:8px;min-width:0}
+.hun{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hue{opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+.ho{font-weight:500;opacity:.9;white-space:nowrap;flex-shrink:0}
+.sc{min-height:calc(100vh - 110px);padding:20px;max-width:1200px;margin:0 auto}
+.lc{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 110px);padding:20px}
+.lc2{background:var(--c);border-radius:var(--r);box-shadow:var(--shl);padding:40px;width:100%;max-width:420px;text-align:center}
+.ll{font-size:48px;color:var(--p);margin-bottom:8px}
+.lc2 h2{font-size:1.6rem;margin-bottom:4px;color:var(--p)}
+.lsub{color:var(--ts);font-size:.9rem;margin-bottom:28px}
+.fg{margin-bottom:16px;text-align:left}
+.fg label{display:block;font-size:.85rem;font-weight:500;margin-bottom:6px;color:var(--ts)}
+.fc{width:100%;padding:12px 14px;border:1.5px solid var(--b);border-radius:var(--rs);font-size:1rem;font-family:inherit}
+.fc:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px var(--pl)}
+.btn{width:100%;padding:14px;border:none;border-radius:var(--rs);font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+.bp{background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);color:#fff}
+.bs{background:var(--bg);color:var(--p);border:1.5px solid var(--p)}
+.bd{background:var(--d);color:#fff}
+.bsg{background:var(--s);color:#fff}
+.bsm{padding:8px 14px;font-size:.85rem;width:auto}
+.bi{background:none;border:none;color:var(--ts);cursor:pointer;padding:6px;border-radius:6px}
+.bi:hover{background:var(--bg);color:var(--p)}
+.lt{margin-top:20px;font-size:.9rem;color:var(--ts)}
+.lt a{color:var(--p);font-weight:600;cursor:pointer}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:20px}
+.dc{background:var(--c);border-radius:var(--r);padding:32px 24px;text-align:center;box-shadow:var(--sh);cursor:pointer;transition:all .3s;border:2px solid transparent}
+.dc:hover{transform:translateY(-4px);box-shadow:var(--shl);border-color:var(--pl)}
+.dc i{font-size:40px;color:var(--p);margin-bottom:16px}
+.uf{background:var(--c);border-radius:var(--r);padding:24px;box-shadow:var(--sh);max-width:700px;margin:0 auto}
+.piw{border:2px dashed var(--b);border-radius:var(--rs);padding:30px;text-align:center;cursor:pointer;margin-bottom:16px}
+.piw:hover{border-color:var(--p);background:var(--pl)}
+.piw i{font-size:36px;color:var(--p);margin-bottom:10px}
+.pp{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:16px}
+.pi{border-radius:var(--rs);overflow:hidden;box-shadow:var(--sh)}
+.pi img{width:100%;height:100px;object-fit:cover}
+.pbg{background:var(--bg);border-radius:10px;height:10px;overflow:hidden}
+.pb{background:linear-gradient(90deg,var(--p),var(--s));height:100%;width:0%;transition:width .3s;border-radius:10px}
+.df{background:var(--c);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.da{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.pc{background:var(--c);border-radius:var(--rs);overflow:hidden;box-shadow:var(--sh);transition:transform .2s;position:relative}
+.pc:hover{transform:scale(1.02)}
+.pc img{width:100%;height:160px;object-fit:cover;cursor:pointer}
+.ps{position:absolute;top:8px;left:8px;z-index:10}
+.ps input{width:20px;height:20px}
+.pn{font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pm{font-size:.75rem;color:var(--ts);margin-top:2px}
+.sc2{position:fixed;bottom:20px;right:20px;background:var(--p);color:#fff;padding:12px 20px;border-radius:50px;font-weight:600;box-shadow:var(--shl);z-index:90}
+.ot{background:var(--c);border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.bc{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:.9rem;color:var(--ts);flex-wrap:wrap}
+.oi,.df2{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:var(--rs);margin-bottom:8px;background:var(--bg);cursor:pointer;transition:all .2s}
+.oi:hover,.df2:hover{background:var(--pl)}
+.oh,.dh{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.oh i,.dh i{color:var(--p);font-size:1.2rem;flex-shrink:0}
+.on,.dn{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oc,.dc2{font-size:.8rem;color:var(--ts);margin-left:8px;flex-shrink:0}
+.oa,.da2{display:flex;gap:4px;flex-shrink:0}
+.opg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.opi{background:var(--c);border-radius:var(--rs);overflow:hidden;box-shadow:var(--sh);position:relative}
+.opi img{width:100%;height:120px;object-fit:cover;cursor:pointer}
+.opa{position:absolute;top:4px;right:4px;display:flex;gap:2px;background:rgba(255,255,255,.9);border-radius:6px;padding:2px}
+.opn{font-size:.75rem;padding:6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prc{background:var(--c);border-radius:var(--r);padding:28px;box-shadow:var(--sh);max-width:600px;margin:0 auto 20px}
+.prc h3{margin-bottom:20px;display:flex;align-items:center;gap:10px;color:var(--p)}
+.pir{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--b)}
+.pir i{color:var(--p);width:20px}
+.pil{font-weight:500;color:var(--ts);font-size:.9rem}
+.piv{font-weight:600;margin-left:auto}
+.dz{border:1px solid #ffc5c5;background:#fff5f5;border-radius:var(--rs);padding:20px;margin-top:20px}
+.dz h4{color:var(--d);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.md{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.md img{max-width:90vw;max-height:85vh;border-radius:var(--rs);object-fit:contain}
+.mc{position:absolute;top:20px;right:20px;color:#fff;font-size:32px;cursor:pointer;background:rgba(0,0,0,.5);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none}
+.tst{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--t);color:#fff;padding:14px 28px;border-radius:50px;font-weight:500;z-index:300;opacity:0;transition:all .3s;white-space:nowrap}
+.tst.show{transform:translateX(-50%) translateY(0);opacity:1}
+.tst.suc{background:var(--s)}
+.tst.err{background:var(--d)}
+.es{text-align:center;padding:40px;color:var(--ts)}
+.es i{font-size:48px;margin-bottom:16px;opacity:.5}
+.ld{text-align:center;padding:40px;color:var(--ts)}
+.dbx{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px;margin:10px 0;font-family:monospace;font-size:.8rem;color:#856404}
+@media(max-width:600px){
+.ht{padding:10px 14px}
+.hbt h1{font-size:1rem}
+.hbt p{display:none}
+.hbtn{padding:6px 10px;font-size:.8rem}
+.hbtn span{display:none}
+.hb2{padding:6px 14px}
+.hue{display:none}
+.sc{padding:14px}
+.lc2{padding:28px 20px}
+.dg{grid-template-columns:1fr}
+.pg{grid-template-columns:repeat(2,1fr)}
+.df{grid-template-columns:1fr}
+.opg{grid-template-columns:repeat(2,1fr)}
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; }
-.hidden { display: none !important; }
-
-/* Header */
-.app-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-lg); }
-.header-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; gap: 12px; }
-.header-brand { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-.header-brand i { font-size: 28px; flex-shrink: 0; }
-.header-brand-text { min-width: 0; }
-.header-brand h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.header-brand p { font-size: 0.7rem; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.header-btn { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.2s; white-space: nowrap; }
-.header-btn:hover { background: rgba(255,255,255,0.25); }
-.header-bottom { background: rgba(0,0,0,0.2); padding: 6px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.75rem; }
-.header-user { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.header-user i { font-size: 0.8rem; opacity: 0.8; }
-.header-user-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.header-user-email { opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: none; }
-.header-org { font-weight: 500; opacity: 0.9; white-space: nowrap; flex-shrink: 0; }
-
-/* Screens */
-.screen { min-height: calc(100vh - 110px); padding: 20px; max-width: 1200px; margin: 0 auto; }
-
-/* Login */
-.login-container { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 110px); padding: 20px; }
-.login-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 40px; width: 100%; max-width: 420px; text-align: center; }
-.login-logo { font-size: 48px; color: var(--primary); margin-bottom: 8px; }
-.login-card h2 { font-size: 1.6rem; margin-bottom: 4px; color: var(--primary); }
-.login-card .subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 28px; }
-.form-group { margin-bottom: 16px; text-align: left; }
-.form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
-.form-control { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
-.form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-.btn { width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
-.btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
-.btn-secondary { background: var(--bg); color: var(--primary); border: 1.5px solid var(--primary); }
-.btn-secondary:hover { background: var(--primary-light); }
-.btn-danger { background: var(--danger); color: white; }
-.btn-success { background: var(--secondary); color: white; }
-.btn-sm { padding: 8px 14px; font-size: 0.85rem; width: auto; }
-.btn-icon { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; }
-.btn-icon:hover { background: var(--bg); color: var(--primary); }
-.btn-icon.btn-danger:hover { background: #fce8e8; color: var(--danger); }
-.login-toggle { margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary); }
-.login-toggle a { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: none; }
-
-/* Dashboard */
-.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
-.dashboard-card { background: var(--card); border-radius: var(--radius); padding: 32px 24px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
-.dashboard-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
-.dashboard-card i { font-size: 40px; color: var(--primary); margin-bottom: 16px; }
-.dashboard-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-.dashboard-card p { color: var(--text-secondary); font-size: 0.9rem; }
-
-/* Upload */
-.upload-form { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); max-width: 700px; margin: 0 auto; }
-.upload-form h2 { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary); }
-.photo-input-wrapper { border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 16px; }
-.photo-input-wrapper:hover { border-color: var(--primary); background: var(--primary-light); }
-.photo-input-wrapper i { font-size: 36px; color: var(--primary); margin-bottom: 10px; }
-.photo-input-wrapper input[type="file"] { display: none; }
-.photo-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px; }
-.preview-item { border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); }
-.preview-item img { width: 100%; height: 100px; object-fit: cover; }
-.preview-item span { display: block; font-size: 0.7rem; padding: 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.progress-container { margin-top: 16px; }
-.progress-bar-bg { background: var(--bg); border-radius: 10px; height: 10px; overflow: hidden; }
-.progress-bar { background: linear-gradient(90deg, var(--primary), var(--secondary)); height: 100%; width: 0%; transition: width 0.3s; border-radius: 10px; }
-.checkbox-wrapper { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
-.checkbox-wrapper input { width: 18px; height: 18px; accent-color: var(--primary); }
-
-/* Download */
-.download-filters { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.filter-group { display: flex; flex-direction: column; gap: 6px; }
-.filter-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-.download-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-.photo-card { background: var(--card); border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.2s; position: relative; }
-.photo-card:hover { transform: scale(1.02); }
-.photo-card img { width: 100%; height: 160px; object-fit: cover; cursor: pointer; }
-.photo-select { position: absolute; top: 8px; left: 8px; z-index: 10; }
-.photo-select input { width: 20px; height: 20px; accent-color: var(--primary); }
-.photo-info { padding: 10px; }
-.photo-name { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.photo-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
-.selection-counter { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 50px; font-weight: 600; box-shadow: var(--shadow-lg); z-index: 90; }
-
-/* Obras Tree */
-.obras-tree { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
-.breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-secondary); flex-wrap: wrap; }
-.breadcrumb i { font-size: 0.7rem; color: var(--border); }
-.obra-item, .date-folder { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; background: var(--bg); cursor: pointer; transition: all 0.2s; }
-.obra-item:hover, .date-folder:hover { background: var(--primary-light); }
-.obra-header, .date-header { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.obra-header i, .date-header i { color: var(--primary); font-size: 1.2rem; flex-shrink: 0; }
-.obra-name, .date-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.obra-count, .date-count { font-size: 0.8rem; color: var(--text-secondary); margin-left: 8px; flex-shrink: 0; }
-.obra-actions, .date-actions { display: flex; gap: 4px; flex-shrink: 0; }
-.obra-photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.obra-photo-item { background: var(--card); border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); position: relative; }
-.obra-photo-item img { width: 100%; height: 120px; object-fit: cover; cursor: pointer; }
-.obra-photo-actions { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; background: rgba(255,255,255,0.9); border-radius: 6px; padding: 2px; }
-.obra-photo-name { font-size: 0.75rem; padding: 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* Profile */
-.profile-card { background: var(--card); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); max-width: 600px; margin: 0 auto 20px; }
-.profile-card h3 { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary); }
-.profile-info-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.profile-info-row i { color: var(--primary); width: 20px; }
-.profile-info-row .label { font-weight: 500; color: var(--text-secondary); font-size: 0.9rem; }
-.profile-info-row .value { font-weight: 600; margin-left: auto; }
-.danger-zone { border: 1px solid #ffc5c5; background: #fff5f5; border-radius: var(--radius-sm); padding: 20px; margin-top: 20px; }
-.danger-zone h4 { color: var(--danger); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.danger-zone p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px; }
-
-/* Modal */
-.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-.modal img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius-sm); object-fit: contain; }
-.modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; cursor: pointer; background: rgba(0,0,0,0.5); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; }
-
-/* Toast */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: white; padding: 14px 28px; border-radius: 50px; font-weight: 500; z-index: 300; opacity: 0; transition: all 0.3s; white-space: nowrap; }
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-.toast.success { background: var(--secondary); }
-.toast.error { background: var(--danger); }
-
-/* Empty State */
-.empty-state { text-align: center; padding: 40px; color: var(--text-secondary); }
-.empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
-.empty-state p { margin-bottom: 16px; }
-.loading { text-align: center; padding: 40px; color: var(--text-secondary); }
-.loading i { font-size: 24px; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .header-top { padding: 10px 14px; }
-  .header-brand h1 { font-size: 1rem; }
-  .header-brand p { display: none; }
-  .header-btn { padding: 6px 10px; font-size: 0.8rem; }
-  .header-btn span { display: none; }
-  .header-bottom { padding: 6px 14px; }
-  .header-user-email { display: none; }
-  .screen { padding: 14px; }
-  .login-card { padding: 28px 20px; }
-  .dashboard-grid { grid-template-columns: 1fr; }
-  .photo-grid { grid-template-columns: repeat(2, 1fr); }
-  .download-filters { grid-template-columns: 1fr; }
-  .obra-photo-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 601px) { .header-user-email { display: inline; } }
+@media(min-width:601px){.hue{display:inline}}
 </style>
 </head>
 <body>
-<!-- Header -->
-<header class="app-header" id="appHeader" style="display:none;">
-  <div class="header-top">
-    <div class="header-brand">
-      <i class="fas fa-eye"></i>
-      <div class="header-brand-text">
-        <h1>VisãoGIGOVMR</h1>
-        <p>Repositório de Fotos</p>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button class="header-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i><span>Voltar</span></button>
-      <button class="header-btn" onclick="showProfile()"><i class="fas fa-user-cog"></i><span>Perfil</span></button>
-      <button class="header-btn" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i><span>Sair</span></button>
-    </div>
-  </div>
-  <div class="header-bottom">
-    <div class="header-user">
-      <i class="fas fa-user"></i>
-      <span class="header-user-name" id="headerUserName">Usuário</span>
-      <span class="header-user-email" id="headerUserEmail">email@caixa.gov.br</span>
-    </div>
-    <div class="header-org">Caixa Econômica Federal</div>
-  </div>
+
+<header class="hdr" id="hdr" style="display:none">
+<div class="ht">
+<div class="hb"><i class="fas fa-eye"></i><div class="hbt"><h1>VisaoGIGOVMR</h1><p>Repositorio de Fotos</p></div></div>
+<div class="ha">
+<button class="hbtn" onclick="goBack()"><i class="fas fa-arrow-left"></i><span>Voltar</span></button>
+<button class="hbtn" onclick="showProfile()"><i class="fas fa-user-cog"></i><span>Perfil</span></button>
+<button class="hbtn" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i><span>Sair</span></button>
+</div>
+</div>
+<div class="hb2">
+<div class="hu"><i class="fas fa-user"></i><span class="hun" id="hun">Usuario</span><span class="hue" id="hue">email</span></div>
+<div class="ho">Caixa Economica Federal</div>
+</div>
 </header>
 
-<!-- Toast -->
-<div id="toast" class="toast"></div>
+<div id="tst" class="tst"></div>
 
-<!-- Login Screen -->
-<div id="loginScreen" class="screen">
-  <div class="login-container">
-    <div class="login-card">
-      <div class="login-logo"><i class="fas fa-eye"></i></div>
-      <h2>VisãoGIGOVMR</h2>
-      <p class="subtitle">Repositório de Fotos para Vistorias de Obras</p>
-      <div id="loginForm">
-        <div class="form-group">
-          <label><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="loginEmail" class="form-control" placeholder="seu.email@caixa.gov.br">
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-lock"></i> Senha</label>
-          <input type="password" id="loginPassword" class="form-control" placeholder="Sua senha">
-        </div>
-        <button class="btn btn-primary" onclick="loginUser()"><i class="fas fa-sign-in-alt"></i> Entrar</button>
-        <div class="login-toggle">Não tem conta? <a onclick="toggleRegister()">Cadastre-se</a></div>
-      </div>
-      <div id="registerForm" style="display:none;">
-        <div class="form-group">
-          <label><i class="fas fa-user"></i> Nome completo</label>
-          <input type="text" id="regName" class="form-control" placeholder="João Silva">
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="regEmail" class="form-control" placeholder="seu.email@caixa.gov.br">
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-lock"></i> Senha</label>
-          <input type="password" id="regPassword" class="form-control" placeholder="Mínimo 6 caracteres">
-        </div>
-        <div class="form-group">
-          <label><i class="fas fa-lock"></i> Confirmar senha</label>
-          <input type="password" id="regConfirmPassword" class="form-control" placeholder="Repita a senha">
-        </div>
-        <button class="btn btn-primary" onclick="registerUser()"><i class="fas fa-user-plus"></i> Criar conta</button>
-        <div class="login-toggle">Já tem conta? <a onclick="toggleRegister()">Fazer login</a></div>
-      </div>
-    </div>
-  </div>
+<div id="loginScreen" class="sc">
+<div class="lc">
+<div class="lc2">
+<div class="ll"><i class="fas fa-eye"></i></div>
+<h2>VisaoGIGOVMR</h2>
+<p class="lsub">Repositorio de Fotos para Vistorias de Obras</p>
+<div id="dbx" class="dbx hidden"></div>
+<div id="loginForm">
+<div class="fg"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="le" class="fc" placeholder="seu.email@caixa.gov.br"></div>
+<div class="fg"><label><i class="fas fa-lock"></i> Senha</label><input type="password" id="lp" class="fc" placeholder="Sua senha"></div>
+<button class="btn bp" onclick="loginUser()"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+<div class="lt">Nao tem conta? <a onclick="toggleRegister()">Cadastre-se</a></div>
+</div>
+<div id="registerForm" style="display:none">
+<div class="fg"><label><i class="fas fa-user"></i> Nome completo</label><input type="text" id="rn" class="fc" placeholder="Joao Silva"></div>
+<div class="fg"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="re" class="fc" placeholder="seu.email@caixa.gov.br"></div>
+<div class="fg"><label><i class="fas fa-lock"></i> Senha</label><input type="password" id="rp" class="fc" placeholder="Minimo 6 caracteres"></div>
+<div class="fg"><label><i class="fas fa-lock"></i> Confirmar senha</label><input type="password" id="rcp" class="fc" placeholder="Repita a senha"></div>
+<button class="btn bp" onclick="registerUser()"><i class="fas fa-user-plus"></i> Criar conta</button>
+<div class="lt">Ja tem conta? <a onclick="toggleRegister()">Fazer login</a></div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- Dashboard Screen -->
-<div id="dashboardScreen" class="screen hidden">
-  <h2 style="margin-bottom:8px;color:var(--primary)"><i class="fas fa-home"></i> Menu Principal</h2>
-  <p style="color:var(--text-secondary);margin-bottom:20px;">Escolha uma opção para continuar</p>
-  <div class="dashboard-grid">
-    <div class="dashboard-card" onclick="showUpload()">
-      <i class="fas fa-cloud-upload-alt"></i>
-      <h3>Fazer Upload</h3>
-      <p>Envie fotos das vistorias de obras</p>
-    </div>
-    <div class="dashboard-card" onclick="showObras()">
-      <i class="fas fa-folder-open"></i>
-      <h3>Minhas Obras</h3>
-      <p>Gerencie obras, datas e fotos</p>
-    </div>
-    <div class="dashboard-card" onclick="showDownload()">
-      <i class="fas fa-cloud-download-alt"></i>
-      <h3>Fazer Download</h3>
-      <p>Baixe fotos para o SharePoint</p>
-    </div>
-  </div>
+<div id="dashScreen" class="sc hidden">
+<h2 style="margin-bottom:8px;color:var(--p)"><i class="fas fa-home"></i> Menu Principal</h2>
+<p style="color:var(--ts);margin-bottom:20px">Escolha uma opcao</p>
+<div class="dg">
+<div class="dc" onclick="showUpload()"><i class="fas fa-cloud-upload-alt"></i><h3>Fazer Upload</h3><p>Envie fotos das vistorias</p></div>
+<div class="dc" onclick="showObras()"><i class="fas fa-folder-open"></i><h3>Minhas Obras</h3><p>Gerencie obras e fotos</p></div>
+<div class="dc" onclick="showDownload()"><i class="fas fa-cloud-download-alt"></i><h3>Fazer Download</h3><p>Baixe fotos para SharePoint</p></div>
+</div>
 </div>
 
-<!-- Upload Screen -->
-<div id="uploadScreen" class="screen hidden">
-  <div class="upload-form">
-    <h2><i class="fas fa-cloud-upload-alt"></i> Fazer Upload</h2>
-    <div class="form-group">
-      <label><i class="fas fa-user"></i> Empregado</label>
-      <input type="text" id="uploadEmpregado" class="form-control" placeholder="Seu nome completo">
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-building"></i> Obra</label>
-      <select id="uploadObra" class="form-control"><option value="">Selecione uma obra...</option></select>
-      <div style="margin-top:8px;">
-        <button class="btn btn-sm btn-secondary" onclick="toggleNovaObra()"><i class="fas fa-plus"></i> Criar nova obra</button>
-      </div>
-      <div id="novaObraContainer" class="hidden" style="margin-top:10px;">
-        <input type="text" id="novaObraNome" class="form-control" placeholder="Nome da nova obra">
-      </div>
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-tasks"></i> Atividade</label>
-      <input type="text" id="uploadAtividade" class="form-control" placeholder="Ex: Fundação, Estrutura, Acabamento...">
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-calendar"></i> Data da vistoria</label>
-      <input type="date" id="uploadDate" class="form-control">
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-sticky-note"></i> Anotações</label>
-      <textarea id="uploadAnotacoes" class="form-control" rows="3" placeholder="Observações sobre a vistoria..."></textarea>
-    </div>
-    <div class="checkbox-wrapper">
-      <input type="checkbox" id="incluirMetadata">
-      <label for="incluirMetadata" style="margin:0;font-weight:normal;">Incluir metadados das fotos (tamanho, dimensões)</label>
-    </div>
-    <div class="photo-input-wrapper" onclick="document.getElementById('photoInput').click()">
-      <i class="fas fa-camera"></i>
-      <p><strong>Clique para selecionar fotos</strong></p>
-      <p style="font-size:0.85rem;color:var(--text-secondary);">ou arraste e solte aqui</p>
-      <input type="file" id="photoInput" multiple accept="image/*" onchange="handlePhotoSelect(this)">
-    </div>
-    <p id="photoCount" style="text-align:center;color:var(--text-secondary);font-size:0.9rem;"></p>
-    <div id="photoPreview" class="photo-preview"></div>
-    <div id="progressContainer" class="progress-container hidden">
-      <div class="progress-bar-bg"><div class="progress-bar" id="uploadProgress"></div></div>
-    </div>
-    <button class="btn btn-primary" onclick="uploadPhotos()" style="margin-top:16px;"><i class="fas fa-upload"></i> Enviar fotos</button>
-  </div>
+<div id="uploadScreen" class="sc hidden">
+<div class="uf">
+<h2><i class="fas fa-cloud-upload-alt"></i> Fazer Upload</h2>
+<div class="fg"><label><i class="fas fa-user"></i> Empregado</label><input type="text" id="ue" class="fc" placeholder="Seu nome"></div>
+<div class="fg"><label><i class="fas fa-building"></i> Obra</label><select id="uo" class="fc"><option value="">Selecione...</option></select><div style="margin-top:8px"><button class="btn bsm bs" onclick="toggleNovaObra()"><i class="fas fa-plus"></i> Nova obra</button></div><div id="noc" class="hidden" style="margin-top:10px"><input type="text" id="non" class="fc" placeholder="Nome da obra"></div></div>
+<div class="fg"><label><i class="fas fa-tasks"></i> Atividade</label><input type="text" id="ua" class="fc" placeholder="Ex: Fundacao, Estrutura..."></div>
+<div class="fg"><label><i class="fas fa-calendar"></i> Data</label><input type="date" id="ud" class="fc"></div>
+<div class="fg"><label><i class="fas fa-sticky-note"></i> Anotacoes</label><textarea id="uan" class="fc" rows="3" placeholder="Observacoes..."></textarea></div>
+<div style="display:flex;align-items:center;gap:8px;margin:12px 0"><input type="checkbox" id="im" style="width:18px;height:18px"><label for="im" style="margin:0;font-weight:normal">Incluir metadados</label></div>
+<div class="piw" onclick="document.getElementById('ph').click()"><i class="fas fa-camera"></i><p><strong>Clique para selecionar fotos</strong></p><p style="font-size:.85rem;color:var(--ts)">ou arraste aqui</p><input type="file" id="ph" multiple accept="image/*" onchange="handlePhotoSelect(this)" style="display:none"></div>
+<p id="pc" style="text-align:center;color:var(--ts);font-size:.9rem"></p>
+<div id="ppv" class="pp"></div>
+<div id="pcc" class="hidden" style="margin-top:16px"><div class="pbg"><div class="pb" id="pb"></div></div></div>
+<button class="btn bp" onclick="uploadPhotos()" style="margin-top:16px"><i class="fas fa-upload"></i> Enviar</button>
+</div>
 </div>
 
-<!-- Download Screen -->
-<div id="downloadScreen" class="screen hidden">
-  <h2 style="margin-bottom:20px;color:var(--primary)"><i class="fas fa-cloud-download-alt"></i> Fazer Download</h2>
-  <div class="download-filters">
-    <div class="filter-group">
-      <label><i class="fas fa-user"></i> Empregado</label>
-      <select id="filterEmpregado" class="form-control"><option value="all">Todos os empregados</option></select>
-    </div>
-    <div class="filter-group">
-      <label><i class="fas fa-building"></i> Obra</label>
-      <select id="filterObra" class="form-control" onchange="onObraFilterChange()"><option value="all">Todas as obras</option></select>
-    </div>
-    <div class="filter-group">
-      <label><i class="fas fa-calendar"></i> Data</label>
-      <select id="filterDate" class="form-control" disabled><option value="all">Todas as datas</option></select>
-    </div>
-  </div>
-  <div class="download-actions">
-    <button class="btn btn-sm btn-secondary" onclick="applyFilters()"><i class="fas fa-filter"></i> Aplicar filtros</button>
-    <button class="btn btn-sm btn-primary" onclick="toggleSelectAll()"><i class="fas fa-check-square"></i> Selecionar todas</button>
-    <button class="btn btn-sm btn-success" onclick="downloadSelected()"><i class="fas fa-download"></i> Baixar selecionadas</button>
-  </div>
-  <p id="downloadCount" style="margin-bottom:12px;color:var(--text-secondary);font-size:0.9rem;"></p>
-  <div id="photoGrid" class="photo-grid"></div>
-  <div id="selectionCounter" class="selection-counter hidden"></div>
+<div id="downloadScreen" class="sc hidden">
+<h2 style="margin-bottom:20px;color:var(--p)"><i class="fas fa-cloud-download-alt"></i> Fazer Download</h2>
+<div class="df">
+<div class="fg"><label><i class="fas fa-user"></i> Empregado</label><select id="fe" class="fc"><option value="all">Todos</option></select></div>
+<div class="fg"><label><i class="fas fa-building"></i> Obra</label><select id="fo" class="fc" onchange="onObraFilterChange()"><option value="all">Todas</option></select></div>
+<div class="fg"><label><i class="fas fa-calendar"></i> Data</label><select id="fd" class="fc" disabled><option value="all">Todas</option></select></div>
+</div>
+<div class="da">
+<button class="btn bsm bs" onclick="applyFilters()"><i class="fas fa-filter"></i> Filtrar</button>
+<button class="btn bsm bp" onclick="toggleSelectAll()"><i class="fas fa-check-square"></i> Selecionar</button>
+<button class="btn bsm bsg" onclick="downloadSelected()"><i class="fas fa-download"></i> Baixar</button>
+</div>
+<p id="dc" style="margin-bottom:12px;color:var(--ts);font-size:.9rem"></p>
+<div id="pg" class="pg"></div>
+<div id="sc2" class="sc2 hidden"></div>
 </div>
 
-<!-- Obras Screen -->
-<div id="obrasScreen" class="screen hidden">
-  <div class="obras-tree">
-    <div class="breadcrumb" id="obrasBreadcrumb"><span>Obras</span></div>
-    <div id="obrasTreeContainer"></div>
-  </div>
+<div id="obrasScreen" class="sc hidden">
+<div class="ot">
+<div class="bc" id="bc"><span>Obras</span></div>
+<div id="otc"></div>
+</div>
 </div>
 
-<!-- Profile Screen -->
-<div id="profileScreen" class="screen hidden">
-  <div class="profile-card">
-    <h3><i class="fas fa-user-circle"></i> Meu Perfil</h3>
-    <div class="profile-info-row">
-      <i class="fas fa-envelope"></i>
-      <span class="label">Email</span>
-      <span class="value" id="profileEmail">-</span>
-    </div>
-    <div class="profile-info-row" style="border-bottom:none;">
-      <i class="fas fa-user"></i>
-      <span class="label">Nome de exibição</span>
-      <span class="value" id="profileNameDisplay">-</span>
-    </div>
-  </div>
-
-  <div class="profile-card">
-    <h3><i class="fas fa-edit"></i> Alterar nome</h3>
-    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:12px;">Este nome será exibido nas fotos que você enviar.</p>
-    <div class="form-group">
-      <input type="text" id="profileName" class="form-control" placeholder="Seu nome completo">
-    </div>
-    <button class="btn btn-primary btn-sm" onclick="updateUserName()" style="width:auto;"><i class="fas fa-save"></i> Salvar nome</button>
-  </div>
-
-  <div class="profile-card">
-    <h3><i class="fas fa-key"></i> Alterar senha</h3>
-    <div class="form-group">
-      <label>Senha atual</label>
-      <input type="password" id="currentPassword" class="form-control" placeholder="Digite sua senha atual">
-    </div>
-    <div class="form-group">
-      <label>Nova senha</label>
-      <input type="password" id="newPassword" class="form-control" placeholder="Mínimo 6 caracteres">
-    </div>
-    <div class="form-group">
-      <label>Confirmar nova senha</label>
-      <input type="password" id="confirmNewPassword" class="form-control" placeholder="Repita a nova senha">
-    </div>
-    <button class="btn btn-primary btn-sm" onclick="changePassword()" style="width:auto;"><i class="fas fa-lock"></i> Alterar senha</button>
-  </div>
-
-  <div class="profile-card">
-    <div class="danger-zone">
-      <h4><i class="fas fa-exclamation-triangle"></i> Zona de perigo</h4>
-      <p>Ao excluir sua conta, todos os seus dados (obras e fotos) serão permanentemente removidos. Esta ação não pode ser desfeita.</p>
-      <button class="btn btn-danger btn-sm" onclick="deleteAccount()" style="width:auto;"><i class="fas fa-trash-alt"></i> Excluir minha conta</button>
-    </div>
-  </div>
+<div id="profileScreen" class="sc hidden">
+<div class="prc">
+<h3><i class="fas fa-user-circle"></i> Meu Perfil</h3>
+<div class="pir"><i class="fas fa-envelope"></i><span class="pil">Email</span><span class="piv" id="pe">-</span></div>
+<div class="pir" style="border-bottom:none"><i class="fas fa-user"></i><span class="pil">Nome</span><span class="piv" id="pnd">-</span></div>
+</div>
+<div class="prc">
+<h3><i class="fas fa-edit"></i> Alterar nome</h3>
+<div class="fg"><input type="text" id="pn" class="fc" placeholder="Seu nome"></div>
+<button class="btn bsm bp" onclick="updateUserName()" style="width:auto"><i class="fas fa-save"></i> Salvar</button>
+</div>
+<div class="prc">
+<h3><i class="fas fa-key"></i> Alterar senha</h3>
+<div class="fg"><label>Senha atual</label><input type="password" id="cp" class="fc" placeholder="Senha atual"></div>
+<div class="fg"><label>Nova senha</label><input type="password" id="np" class="fc" placeholder="Minimo 6 caracteres"></div>
+<div class="fg"><label>Confirmar</label><input type="password" id="ncp" class="fc" placeholder="Repita"></div>
+<button class="btn bsm bp" onclick="changePassword()" style="width:auto"><i class="fas fa-lock"></i> Alterar</button>
+</div>
+<div class="prc">
+<div class="dz">
+<h4><i class="fas fa-exclamation-triangle"></i> Zona de perigo</h4>
+<p>Ao excluir sua conta, todos os dados serao removidos permanentemente.</p>
+<button class="btn bsm bd" onclick="deleteAccount()" style="width:auto"><i class="fas fa-trash-alt"></i> Excluir conta</button>
+</div>
+</div>
 </div>
 
-<!-- Photo Modal -->
-<div id="photoModal" class="modal hidden" onclick="closeModal()">
-  <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-  <img id="modalImage" src="" alt="Foto ampliada">
+<div id="md" class="md hidden" onclick="closeModal()">
+<button class="mc" onclick="closeModal()"><i class="fas fa-times"></i></button>
+<img id="mi" src="" alt="Foto">
 </div>
 
 <script type="module">
@@ -414,15 +255,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, deleteUser, updateProfile, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, deleteDoc, doc, updateDoc, getDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase config (obfuscated to avoid GitHub secret scanning alerts)
-const fk = atob("QUl6YVN5QnljVFZNMWpnalMyem00cWFHbmpEVEg2SlJNa3dfcHM=");
-const fd = atob("dmlzYW8tZ2lnb3Ztci5maXJlYmFzZWFwcC5jb20=");
-const fp = atob("dmlzYW8tZ2lnb3Ztcg==");
-const fs = atob("dmlzYW8tZ2lnb3Ztci5maXJlYmFzZXN0b3JhZ2UuYXBw");
-const fm = atob("NjA0ODg4NzE5NTEw");
-const fa = atob("MTo2MDQ4ODg3MTk1MTA6d2ViOjA3OWNjMmE0MmZjMzY4OWQ1NjYyYjc=");
+const firebaseConfig = {
+  apiKey: "AIzaSyBycTYSM1jgjS2zm4qaGnjDtH6JRMiw_ps",
+  authDomain: "visao-gigovmr.firebaseapp.com",
+  projectId: "visao-gigovmr",
+  storageBucket: "visao-gigovmr.firebasestorage.app",
+  messagingSenderId: "604888719510",
+  appId: "1:604888719510:web:079cc2a42fc3689d5662b7"
+};
 
-const firebaseConfig = { apiKey: fk, authDomain: fd, projectId: fp, storageBucket: fs, messagingSenderId: fm, appId: fa };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -431,745 +272,370 @@ const CLOUD_NAME = "olfeaqsz";
 const UPLOAD_PRESET = "visao_gigovmr_unsigned";
 
 let currentUser = null, allPhotos = [], selectedPhotos = new Set();
-let obraViewLevel = 'list', currentObraId = null, currentDateFolder = null;
+let obraViewLevel = 'list', currentObraId = null, currentDateFolder = null, currentObraName = '';
+let selectedFiles = [];
 
-// ===== AUTH =====
-window.registerUser = async function() {
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const name = document.getElementById('regName').value.trim();
-  const confirmPassword = document.getElementById('regConfirmPassword').value;
-  if (!email || !password || !name) { showToast('Preencha todos os campos', 'error'); return; }
-  if (password !== confirmPassword) { showToast('As senhas não coincidem', 'error'); return; }
-  if (password.length < 6) { showToast('A senha deve ter pelo menos 6 caracteres', 'error'); return; }
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(userCredential.user, { displayName: name });
-    showToast('Conta criada com sucesso!', 'success');
-    toggleRegister();
-  } catch (error) { showToast(getAuthErrorMessage(error.code), 'error'); }
-};
+function showDbg(msg) {
+  const el = document.getElementById('dbx');
+  if (el) { el.textContent = 'DEBUG: ' + msg; el.classList.remove('hidden'); }
+  console.log('DEBUG:', msg);
+}
 
-window.loginUser = async function() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  if (!email || !password) { showToast('Preencha email e senha', 'error'); return; }
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    showToast('Login realizado!', 'success');
-  } catch (error) { showToast(getAuthErrorMessage(error.code), 'error'); }
-};
+function toast(msg, type) {
+  const t = document.getElementById('tst');
+  t.textContent = msg;
+  t.className = 'tst ' + (type === 'success' ? 'suc' : 'err') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-window.logoutUser = async function() {
-  try { await signOut(auth); showToast('Logout realizado', 'success'); }
-  catch (error) { showToast('Erro ao sair', 'error'); }
-};
+function errMsg(code) {
+  const m = {
+    'auth/invalid-email': 'Email invalido',
+    'auth/user-disabled': 'Conta desativada',
+    'auth/user-not-found': 'Usuario nao encontrado',
+    'auth/wrong-password': 'Senha incorreta',
+    'auth/email-already-in-use': 'Email ja cadastrado',
+    'auth/weak-password': 'Senha muito fraca',
+    'auth/invalid-credential': 'Credenciais invalidas',
+    'auth/invalid-login-credentials': 'Email ou senha incorretos',
+    'auth/network-request-failed': 'Erro de rede',
+    'auth/too-many-requests': 'Muitas tentativas',
+    'auth/unauthorized-domain': 'Dominio nao autorizado',
+    'auth/invalid-api-key': 'API Key invalida'
+  };
+  return m[code] || code;
+}
 
-window.toggleRegister = function() {
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  if (loginForm.style.display === 'none') { loginForm.style.display = 'block'; registerForm.style.display = 'none'; }
-  else { loginForm.style.display = 'none'; registerForm.style.display = 'block'; }
-};
-
-// ===== PROFILE =====
-window.showProfile = function() {
-  hideAllScreens();
-  document.getElementById('profileScreen').classList.remove('hidden');
-  document.getElementById('profileEmail').textContent = currentUser.email;
-  document.getElementById('profileNameDisplay').textContent = currentUser.displayName || 'Não definido';
-  document.getElementById('profileName').value = currentUser.displayName || '';
-};
-
-window.updateUserName = async function() {
-  const newName = document.getElementById('profileName').value.trim();
-  if (!newName) { showToast('Digite um nome válido', 'error'); return; }
-  try {
-    await updateProfile(currentUser, { displayName: newName });
-    updateHeaderUserInfo();
-    document.getElementById('profileNameDisplay').textContent = newName;
-    showToast('Nome atualizado com sucesso!', 'success');
-  } catch (error) { showToast('Erro ao atualizar nome', 'error'); }
-};
-
-window.changePassword = async function() {
-  const currentPassword = document.getElementById('currentPassword').value;
-  const newPassword = document.getElementById('newPassword').value;
-  const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-  if (!currentPassword || !newPassword || !confirmNewPassword) { showToast('Preencha todos os campos', 'error'); return; }
-  if (newPassword !== confirmNewPassword) { showToast('As novas senhas não coincidem', 'error'); return; }
-  if (newPassword.length < 6) { showToast('A nova senha deve ter pelo menos 6 caracteres', 'error'); return; }
-  try {
-    const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
-    await reauthenticateWithCredential(currentUser, credential);
-    await updatePassword(currentUser, newPassword);
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmNewPassword').value = '';
-    showToast('Senha alterada com sucesso!', 'success');
-  } catch (error) {
-    if (error.code === 'auth/wrong-password') showToast('Senha atual incorreta', 'error');
-    else showToast('Erro ao alterar senha', 'error');
-  }
-};
-
-window.deleteAccount = async function() {
-  const confirmDelete = confirm('ATENÇÃO: Isso irá excluir permanentemente sua conta e todos os seus dados.\n\nDeseja continuar?');
-  if (!confirmDelete) return;
-  const password = prompt('Digite sua senha para confirmar:');
-  if (!password) return;
-  try {
-    const credential = EmailAuthProvider.credential(currentUser.email, password);
-    await reauthenticateWithCredential(currentUser, credential);
-    // Delete user's photos
-    const photosQuery = query(collection(db, 'photos'), where('userId', '==', currentUser.uid));
-    const photosSnapshot = await getDocs(photosQuery);
-    const batch = writeBatch(db);
-    photosSnapshot.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    // Delete user's obras
-    const obrasQuery = query(collection(db, 'obras'), where('createdBy', '==', currentUser.uid));
-    const obrasSnapshot = await getDocs(obrasQuery);
-    const batch2 = writeBatch(db);
-    obrasSnapshot.docs.forEach(d => batch2.delete(d.ref));
-    await batch2.commit();
-    await deleteUser(currentUser);
-    showToast('Conta excluída com sucesso', 'success');
-  } catch (error) {
-    if (error.code === 'auth/wrong-password') showToast('Senha incorreta', 'error');
-    else showToast('Erro ao excluir conta', 'error');
-  }
-};
-
-// ===== NAVIGATION =====
-function hideAllScreens() {
-  ['loginScreen','dashboardScreen','uploadScreen','downloadScreen','obrasScreen','profileScreen'].forEach(id => {
+function hideAll() {
+  ['loginScreen','dashScreen','uploadScreen','downloadScreen','obrasScreen','profileScreen'].forEach(id => {
     document.getElementById(id).classList.add('hidden');
   });
 }
 
-window.showDashboard = function() {
-  hideAllScreens();
-  document.getElementById('dashboardScreen').classList.remove('hidden');
+function fmtDate(d) {
+  if (!d || d === 'Sem data') return 'Sem data';
+  const p = d.split('-');
+  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : d;
+}
+
+// AUTH
+window.registerUser = async function() {
+  const email = document.getElementById('re').value.trim();
+  const pass = document.getElementById('rp').value;
+  const name = document.getElementById('rn').value.trim();
+  const cpass = document.getElementById('rcp').value;
+  if (!email || !pass || !name) { toast('Preencha todos os campos', 'error'); return; }
+  if (pass !== cpass) { toast('Senhas nao coincidem', 'error'); return; }
+  if (pass.length < 6) { toast('Senha minimo 6 caracteres', 'error'); return; }
+  try {
+    const uc = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(uc.user, { displayName: name });
+    toast('Conta criada!', 'success');
+    toggleRegister();
+  } catch (e) { showDbg('REG:' + e.code + ' ' + e.message); toast(errMsg(e.code), 'error'); }
 };
 
+window.loginUser = async function() {
+  const email = document.getElementById('le').value.trim();
+  const pass = document.getElementById('lp').value;
+  if (!email || !pass) { toast('Preencha email e senha', 'error'); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    toast('Login OK!', 'success');
+  } catch (e) { showDbg('LOGIN:' + e.code + ' ' + e.message); toast(errMsg(e.code), 'error'); }
+};
+
+window.logoutUser = async function() {
+  try { await signOut(auth); toast('Saiu', 'success'); } catch (e) { toast('Erro ao sair', 'error'); }
+};
+
+window.toggleRegister = function() {
+  const lf = document.getElementById('loginForm');
+  const rf = document.getElementById('registerForm');
+  if (lf.style.display === 'none') { lf.style.display = 'block'; rf.style.display = 'none'; }
+  else { lf.style.display = 'none'; rf.style.display = 'block'; }
+};
+
+// PROFILE
+window.showProfile = function() {
+  hideAll();
+  document.getElementById('profileScreen').classList.remove('hidden');
+  document.getElementById('pe').textContent = currentUser ? currentUser.email : '-';
+  document.getElementById('pnd').textContent = currentUser && currentUser.displayName ? currentUser.displayName : 'Nao definido';
+  document.getElementById('pn').value = currentUser && currentUser.displayName ? currentUser.displayName : '';
+};
+
+window.updateUserName = async function() {
+  const nn = document.getElementById('pn').value.trim();
+  if (!nn) { toast('Digite um nome', 'error'); return; }
+  try { await updateProfile(currentUser, { displayName: nn }); document.getElementById('hun').textContent = nn; document.getElementById('pnd').textContent = nn; toast('Nome atualizado!', 'success'); }
+  catch (e) { toast('Erro', 'error'); }
+};
+
+window.changePassword = async function() {
+  const cp = document.getElementById('cp').value;
+  const np = document.getElementById('np').value;
+  const ncp = document.getElementById('ncp').value;
+  if (!cp || !np || !ncp) { toast('Preencha todos', 'error'); return; }
+  if (np !== ncp) { toast('Novas senhas nao coincidem', 'error'); return; }
+  if (np.length < 6) { toast('Nova senha minimo 6 chars', 'error'); return; }
+  try {
+    const cred = EmailAuthProvider.credential(currentUser.email, cp);
+    await reauthenticateWithCredential(currentUser, cred);
+    await updatePassword(currentUser, np);
+    document.getElementById('cp').value = ''; document.getElementById('np').value = ''; document.getElementById('ncp').value = '';
+    toast('Senha alterada!', 'success');
+  } catch (e) { toast(e.code === 'auth/wrong-password' ? 'Senha atual incorreta' : 'Erro', 'error'); }
+};
+
+window.deleteAccount = async function() {
+  if (!confirm('ATENCAO: Excluir conta e todos os dados permanentemente?')) return;
+  const pw = prompt('Digite sua senha:');
+  if (!pw) return;
+  try {
+    const cred = EmailAuthProvider.credential(currentUser.email, pw);
+    await reauthenticateWithCredential(currentUser, cred);
+    const pq = query(collection(db, 'photos'), where('userId', '==', currentUser.uid));
+    const ps = await getDocs(pq); const b = writeBatch(db); ps.docs.forEach(d => b.delete(d.ref)); await b.commit();
+    const oq = query(collection(db, 'obras'), where('createdBy', '==', currentUser.uid));
+    const os = await getDocs(oq); const b2 = writeBatch(db); os.docs.forEach(d => b2.delete(d.ref)); await b2.commit();
+    await deleteUser(currentUser);
+    toast('Conta excluida', 'success');
+  } catch (e) { toast(e.code === 'auth/wrong-password' ? 'Senha incorreta' : 'Erro', 'error'); }
+};
+
+// NAV
+window.showDashboard = function() { hideAll(); document.getElementById('dashScreen').classList.remove('hidden'); };
+
 window.showUpload = function() {
-  hideAllScreens();
-  document.getElementById('uploadScreen').classList.remove('hidden');
-  document.getElementById('uploadDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('uploadEmpregado').value = currentUser.displayName || currentUser.email;
+  hideAll(); document.getElementById('uploadScreen').classList.remove('hidden');
+  document.getElementById('ud').value = new Date().toISOString().split('T')[0];
+  document.getElementById('ue').value = currentUser && currentUser.displayName ? currentUser.displayName : (currentUser ? currentUser.email : '');
   loadObrasSelect();
 };
 
 window.showDownload = async function() {
-  hideAllScreens();
-  document.getElementById('downloadScreen').classList.remove('hidden');
-  await loadDownloadFilters();
-  await loadPhotosForDownload();
+  hideAll(); document.getElementById('downloadScreen').classList.remove('hidden');
+  await loadDownloadFilters(); await loadPhotosForDownload();
 };
 
 window.showObras = async function() {
-  hideAllScreens();
-  document.getElementById('obrasScreen').classList.remove('hidden');
+  hideAll(); document.getElementById('obrasScreen').classList.remove('hidden');
   obraViewLevel = 'list'; currentObraId = null; currentDateFolder = null;
   await loadObrasTree();
 };
 
 window.goBack = function() {
   const screens = ['uploadScreen','downloadScreen','obrasScreen','profileScreen'];
-  const currentScreen = screens.find(s => !document.getElementById(s).classList.contains('hidden'));
-  if (currentScreen) showDashboard();
+  const cs = screens.find(s => !document.getElementById(s).classList.contains('hidden'));
+  if (cs) showDashboard();
 };
 
-// ===== UPLOAD =====
-window.toggleNovaObra = function() {
-  const el = document.getElementById('novaObraContainer');
-  el.classList.toggle('hidden');
-};
+// UPLOAD
+window.toggleNovaObra = function() { document.getElementById('noc').classList.toggle('hidden'); };
 
 async function loadObrasSelect() {
-  const select = document.getElementById('uploadObra');
-  select.innerHTML = '<option value="">Selecione uma obra...</option>';
-  try {
-    const q = query(collection(db, 'obras'), orderBy('name'));
-    const snapshot = await getDocs(q);
-    snapshot.docs.forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d.id;
-      opt.textContent = d.data().name;
-      select.appendChild(opt);
-    });
-  } catch (e) { console.error(e); }
+  const s = document.getElementById('uo'); s.innerHTML = '<option value="">Selecione...</option>';
+  try { const q = query(collection(db, 'obras'), orderBy('name')); const sn = await getDocs(q); sn.docs.forEach(d => { const o = document.createElement('option'); o.value = d.id; o.textContent = d.data().name; s.appendChild(o); }); } catch (e) {}
 }
 
-let selectedFiles = [];
-window.handlePhotoSelect = function(input) {
-  selectedFiles = Array.from(input.files);
-  const preview = document.getElementById('photoPreview');
-  const count = document.getElementById('photoCount');
-  preview.innerHTML = '';
-  count.textContent = selectedFiles.length > 0 ? `${selectedFiles.length} foto(s) selecionada(s)` : '';
-  selectedFiles.forEach((file, idx) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const div = document.createElement('div');
-      div.className = 'preview-item';
-      div.innerHTML = `<img src="${e.target.result}" alt=""><span>${file.name}</span>`;
-      preview.appendChild(div);
-    };
-    reader.readAsDataURL(file);
-  });
+window.handlePhotoSelect = function(inp) {
+  selectedFiles = Array.from(inp.files);
+  const pv = document.getElementById('ppv'); const pc = document.getElementById('pc');
+  pv.innerHTML = ''; pc.textContent = selectedFiles.length > 0 ? selectedFiles.length + ' foto(s)' : '';
+  selectedFiles.forEach(f => { const r = new FileReader(); r.onload = (e) => { const d = document.createElement('div'); d.className = 'pi'; d.innerHTML = '<img src="' + e.target.result + '"><span>' + f.name + '</span>'; pv.appendChild(d); }; r.readAsDataURL(f); });
 };
 
 window.uploadPhotos = async function() {
-  const empregado = document.getElementById('uploadEmpregado').value.trim();
-  const obraId = document.getElementById('uploadObra').value;
-  const novaObraNome = document.getElementById('novaObraNome').value.trim();
-  const atividade = document.getElementById('uploadAtividade').value.trim();
-  const dateStr = document.getElementById('uploadDate').value;
-  const anotacoes = document.getElementById('uploadAnotacoes').value.trim();
-  const incluirMetadata = document.getElementById('incluirMetadata').checked;
-
-  if (!empregado) { showToast('Informe o nome do empregado', 'error'); return; }
-  if (!obraId && !novaObraNome) { showToast('Selecione uma obra ou crie uma nova', 'error'); return; }
-  if (selectedFiles.length === 0) { showToast('Selecione pelo menos uma foto', 'error'); return; }
-
-  let finalObraId = obraId;
-  let obraName = '';
-
-  if (novaObraNome) {
-    try {
-      const obraRef = await addDoc(collection(db, 'obras'), {
-        name: novaObraNome, createdBy: currentUser.uid, createdAt: new Date().toISOString()
-      });
-      finalObraId = obraRef.id;
-      obraName = novaObraNome;
-    } catch (e) { showToast('Erro ao criar obra', 'error'); return; }
-  } else {
-    try {
-      const obraDoc = await getDoc(doc(db, 'obras', obraId));
-      if (obraDoc.exists()) obraName = obraDoc.data().name;
-    } catch (e) {}
-  }
-
-  const progressBar = document.getElementById('uploadProgress');
-  const progressContainer = document.getElementById('progressContainer');
-  progressContainer.classList.remove('hidden');
-
+  const emp = document.getElementById('ue').value.trim();
+  const oid = document.getElementById('uo').value;
+  const non = document.getElementById('non').value.trim();
+  const atv = document.getElementById('ua').value.trim();
+  const dt = document.getElementById('ud').value;
+  const ant = document.getElementById('uan').value.trim();
+  const imd = document.getElementById('im').checked;
+  if (!emp) { toast('Informe o nome', 'error'); return; }
+  if (!oid && !non) { toast('Selecione ou crie obra', 'error'); return; }
+  if (selectedFiles.length === 0) { toast('Selecione fotos', 'error'); return; }
+  let foid = oid, oname = '';
+  if (non) { try { const r = await addDoc(collection(db, 'obras'), { name: non, createdBy: currentUser.uid, createdAt: new Date().toISOString() }); foid = r.id; oname = non; } catch (e) { toast('Erro criar obra', 'error'); return; } }
+  else { try { const od = await getDoc(doc(db, 'obras', oid)); if (od.exists()) oname = od.data().name; } catch (e) {} }
+  const pb = document.getElementById('pb'); const pcc = document.getElementById('pcc'); pcc.classList.remove('hidden');
   for (let i = 0; i < selectedFiles.length; i++) {
-    const file = selectedFiles[i];
-    const percent = ((i + 1) / selectedFiles.length) * 100;
-    progressBar.style.width = percent + '%';
-
+    const f = selectedFiles[i]; pb.style.width = (((i + 1) / selectedFiles.length) * 100) + '%';
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', UPLOAD_PRESET);
-      formData.append('folder', 'visao-gigovmr');
-
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-        method: 'POST', body: formData
-      });
-      const data = await response.json();
-      if (data.secure_url) {
-        const metadata = {};
-        if (incluirMetadata) {
-          metadata.size = file.size;
-          metadata.type = file.type;
-        }
-        await addDoc(collection(db, 'photos'), {
-          url: data.secure_url, publicId: data.public_id,
-          obraId: finalObraId, obraName: obraName,
-          empregado: empregado, atividade: atividade,
-          date: dateStr, anotacoes: anotacoes,
-          userId: currentUser.uid, userEmail: currentUser.email,
-          createdAt: new Date().toISOString(), metadata: metadata
-        });
+      const fd = new FormData(); fd.append('file', f); fd.append('upload_preset', UPLOAD_PRESET); fd.append('folder', 'visao-gigovmr');
+      const r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', { method: 'POST', body: fd });
+      const d = await r.json();
+      if (d.secure_url) {
+        const meta = {}; if (imd) { meta.size = f.size; meta.type = f.type; }
+        await addDoc(collection(db, 'photos'), { url: d.secure_url, publicId: d.public_id, obraId: foid, obraName: oname, empregado: emp, atividade: atv, date: dt, anotacoes: ant, userId: currentUser.uid, userEmail: currentUser.email, createdAt: new Date().toISOString(), metadata: meta });
       }
-    } catch (e) { console.error('Upload error:', e); }
+    } catch (e) { console.error(e); }
   }
-
-  progressBar.style.width = '100%';
-  setTimeout(() => {
-    progressContainer.classList.add('hidden');
-    progressBar.style.width = '0%';
-    selectedFiles = [];
-    document.getElementById('photoPreview').innerHTML = '';
-    document.getElementById('photoCount').textContent = '';
-    document.getElementById('photoInput').value = '';
-    document.getElementById('uploadAtividade').value = '';
-    document.getElementById('uploadAnotacoes').value = '';
-    document.getElementById('novaObraNome').value = '';
-    document.getElementById('novaObraContainer').classList.add('hidden');
-    showToast(`${selectedFiles.length || 'Todas as'} foto(s) enviada(s) com sucesso!`, 'success');
-  }, 500);
+  pb.style.width = '100%';
+  setTimeout(() => { pcc.classList.add('hidden'); pb.style.width = '0%'; selectedFiles = []; document.getElementById('ppv').innerHTML = ''; document.getElementById('pc').textContent = ''; document.getElementById('ph').value = ''; document.getElementById('ua').value = ''; document.getElementById('uan').value = ''; document.getElementById('non').value = ''; document.getElementById('noc').classList.add('hidden'); toast('Fotos enviadas!', 'success'); }, 500);
 };
 
-// ===== OBRAS TREE =====
+// OBRAS TREE
 window.loadObrasTree = async function() {
-  const container = document.getElementById('obrasTreeContainer');
-  const breadcrumb = document.getElementById('obrasBreadcrumb');
-  container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
-
+  const c = document.getElementById('otc'); const bc = document.getElementById('bc');
+  c.innerHTML = '<div class="ld"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
   if (obraViewLevel === 'list') {
-    breadcrumb.innerHTML = '<span>Obras</span>';
+    bc.innerHTML = '<span>Obras</span>';
     try {
-      const q = query(collection(db, 'obras'), orderBy('name'));
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>Nenhuma obra cadastrada</p><button class="btn btn-sm btn-secondary" onclick="showUpload()"><i class="fas fa-plus"></i> Criar obra no upload</button></div>';
-        return;
-      }
-      container.innerHTML = '';
-      snapshot.docs.forEach(d => {
-        const obra = d.data();
-        const div = document.createElement('div');
-        div.className = 'obra-item';
-        div.innerHTML = `
-          <div class="obra-header" onclick="openObra('${d.id}', '${obra.name.replace(/'/g, "\'")}')">
-            <i class="fas fa-building"></i>
-            <span class="obra-name">${obra.name}</span>
-          </div>
-          <div class="obra-actions">
-            <button class="btn-icon" onclick="event.stopPropagation(); renameObra('${d.id}', '${obra.name.replace(/'/g, "\'")}')" title="Renomear"><i class="fas fa-edit"></i></button>
-            <button class="btn-icon btn-danger" onclick="event.stopPropagation(); deleteObra('${d.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
-          </div>`;
-        container.appendChild(div);
+      const q = query(collection(db, 'obras'), orderBy('name')); const s = await getDocs(q);
+      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-folder-open"></i><p>Nenhuma obra</p><button class="btn bsm bs" onclick="showUpload()"><i class="fas fa-plus"></i> Criar obra</button></div>'; return; }
+      c.innerHTML = '';
+      s.docs.forEach(d => {
+        const o = d.data(); const n = o.name.replace(/'/g, "\\'");
+        const div = document.createElement('div'); div.className = 'oi';
+        div.innerHTML = '<div class="oh" onclick="openObra(\'' + d.id + '\',\'' + n + '\')"><i class="fas fa-building"></i><span class="on">' + o.name + '</span></div><div class="oa"><button class="bi" onclick="event.stopPropagation();renameObra(\'' + d.id + '\',\'' + n + '\')" title="Renomear"><i class="fas fa-edit"></i></button><button class="bi" style="color:var(--d)" onclick="event.stopPropagation();deleteObra(\'' + d.id + '\')" title="Excluir"><i class="fas fa-trash"></i></button></div>';
+        c.appendChild(div);
       });
-    } catch (e) { showToast('Erro ao carregar obras', 'error'); }
+    } catch (e) { toast('Erro carregar obras', 'error'); }
   } else if (obraViewLevel === 'obra' && currentObraId) {
-    breadcrumb.innerHTML = `<span style="cursor:pointer;color:var(--primary)" onclick="obraViewLevel='list';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span>${currentObraName || ''}</span>`;
+    bc.innerHTML = '<span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'list\';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span>' + currentObraName + '</span>';
     try {
-      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), orderBy('date', 'desc'));
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>Nenhuma foto nesta obra</p></div>';
-        return;
-      }
-      const dateGroups = {};
-      snapshot.docs.forEach(d => {
-        const photo = d.data();
-        const date = photo.date || 'Sem data';
-        if (!dateGroups[date]) dateGroups[date] = [];
-        dateGroups[date].push({ id: d.id, ...photo });
+      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), orderBy('date', 'desc')); const s = await getDocs(q);
+      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+      const dg = {}; s.docs.forEach(d => { const p = d.data(); const dt = p.date || 'Sem data'; if (!dg[dt]) dg[dt] = []; dg[dt].push({id:d.id,...p}); });
+      c.innerHTML = '';
+      Object.keys(dg).sort().reverse().forEach(dt => {
+        const div = document.createElement('div'); div.className = 'df2';
+        div.innerHTML = '<div class="dh" onclick="openDateFolder(\'' + dt + '\')"><i class="fas fa-calendar-alt"></i><span class="dn">' + fmtDate(dt) + '</span><span class="dc2">(' + dg[dt].length + ')</span></div><div class="da2"><button class="bi" style="color:var(--d)" onclick="event.stopPropagation();deleteDateFolder(\'' + dt + '\')" title="Excluir"><i class="fas fa-trash"></i></button></div>';
+        c.appendChild(div);
       });
-      container.innerHTML = '';
-      Object.keys(dateGroups).sort().reverse().forEach(date => {
-        const div = document.createElement('div');
-        div.className = 'date-folder';
-        div.innerHTML = `
-          <div class="date-header" onclick="openDateFolder('${date}')">
-            <i class="fas fa-calendar-alt"></i>
-            <span class="date-name">${formatDateBR(date)}</span>
-            <span class="date-count">(${dateGroups[date].length})</span>
-          </div>
-          <div class="date-actions">
-            <button class="btn-icon btn-danger" onclick="event.stopPropagation(); deleteDateFolder('${date}')" title="Excluir todas desta data"><i class="fas fa-trash"></i></button>
-          </div>`;
-        container.appendChild(div);
-      });
-    } catch (e) { showToast('Erro ao carregar datas', 'error'); }
+    } catch (e) { toast('Erro carregar datas', 'error'); }
   } else if (obraViewLevel === 'date' && currentObraId && currentDateFolder) {
-    breadcrumb.innerHTML = `<span style="cursor:pointer;color:var(--primary)" onclick="obraViewLevel='list';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span style="cursor:pointer;color:var(--primary)" onclick="obraViewLevel='obra';currentDateFolder=null;loadObrasTree();">${currentObraName}</span> <i class="fas fa-chevron-right"></i> <span>${formatDateBR(currentDateFolder)}</span>`;
+    bc.innerHTML = '<span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'list\';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'obra\';currentDateFolder=null;loadObrasTree();">' + currentObraName + '</span> <i class="fas fa-chevron-right"></i> <span>' + fmtDate(currentDateFolder) + '</span>';
     try {
-      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', currentDateFolder), orderBy('createdAt', 'desc'));
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>Nenhuma foto nesta data</p></div>';
-        return;
-      }
-      const grid = document.createElement('div');
-      grid.className = 'obra-photo-grid';
-      snapshot.docs.forEach(d => {
-        const photo = d.data();
-        const item = document.createElement('div');
-        item.className = 'obra-photo-item';
-        item.innerHTML = `
-          <img src="${photo.url}" alt="${photo.empregado}" onclick="openModal('${photo.url}')">
-          <div class="obra-photo-actions">
-            <button class="btn-icon" onclick="renamePhoto('${d.id}', '${(photo.empregado || 'foto').replace(/'/g, "\'")}')" title="Renomear"><i class="fas fa-edit"></i></button>
-            <button class="btn-icon btn-danger" onclick="deletePhoto('${d.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
-          </div>
-          <div class="obra-photo-name">${photo.empregado || 'Sem nome'}</div>`;
-        grid.appendChild(item);
+      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', currentDateFolder), orderBy('createdAt', 'desc')); const s = await getDocs(q);
+      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+      const g = document.createElement('div'); g.className = 'opg';
+      s.docs.forEach(d => {
+        const p = d.data(); const n = (p.empregado || 'foto').replace(/'/g, "\\'");
+        const div = document.createElement('div'); div.className = 'opi';
+        div.innerHTML = '<img src="' + p.url + '" onclick="openModal(\'' + p.url + '\')"><div class="opa"><button class="bi" onclick="renamePhoto(\'' + d.id + '\',\'' + n + '\')" title="Renomear"><i class="fas fa-edit"></i></button><button class="bi" style="color:var(--d)" onclick="deletePhoto(\'' + d.id + '\')" title="Excluir"><i class="fas fa-trash"></i></button></div><div class="opn">' + (p.empregado || 'Sem nome') + '</div>';
+        g.appendChild(div);
       });
-      container.innerHTML = '';
-      container.appendChild(grid);
-    } catch (e) { showToast('Erro ao carregar fotos', 'error'); }
+      c.innerHTML = ''; c.appendChild(g);
+    } catch (e) { toast('Erro carregar fotos', 'error'); }
   }
 };
 
-window.openObra = function(obraId, obraName) {
-  obraViewLevel = 'obra'; currentObraId = obraId; currentObraName = obraName; currentDateFolder = null;
-  loadObrasTree();
+window.openObra = function(id, name) { obraViewLevel = 'obra'; currentObraId = id; currentObraName = name; currentDateFolder = null; loadObrasTree(); };
+window.openDateFolder = function(dt) { obraViewLevel = 'date'; currentDateFolder = dt; loadObrasTree(); };
+
+window.renameObra = async function(id, name) {
+  const nn = prompt('Novo nome:', name); if (!nn || nn === name) return;
+  try { await updateDoc(doc(db, 'obras', id), {name: nn.trim()}); toast('Obra renomeada!', 'success'); loadObrasTree(); } catch (e) { toast('Erro', 'error'); }
 };
 
-window.openDateFolder = function(date) {
-  obraViewLevel = 'date'; currentDateFolder = date;
-  loadObrasTree();
+window.deleteObra = async function(id) {
+  if (!confirm('Excluir obra e TODAS as fotos?')) return;
+  try { const pq = query(collection(db, 'photos'), where('obraId', '==', id)); const ps = await getDocs(pq); const b = writeBatch(db); ps.docs.forEach(d => b.delete(d.ref)); await b.commit(); await deleteDoc(doc(db, 'obras', id)); toast('Obra excluida!', 'success'); loadObrasTree(); } catch (e) { toast('Erro', 'error'); }
 };
 
-window.renameObra = async function(obraId, currentName) {
-  const newName = prompt('Novo nome da obra:', currentName);
-  if (!newName || newName === currentName) return;
-  try {
-    await updateDoc(doc(db, 'obras', obraId), { name: newName.trim() });
-    showToast('Obra renomeada!', 'success');
-    loadObrasTree();
-  } catch (e) { showToast('Erro ao renomear', 'error'); }
+window.deleteDateFolder = async function(dt) {
+  if (!confirm('Excluir TODAS as fotos de ' + fmtDate(dt) + '?')) return;
+  try { const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', dt)); const s = await getDocs(q); const b = writeBatch(db); s.docs.forEach(d => b.delete(d.ref)); await b.commit(); toast('Fotos excluidas!', 'success'); loadObrasTree(); } catch (e) { toast('Erro', 'error'); }
 };
 
-window.deleteObra = async function(obraId) {
-  if (!confirm('Tem certeza que deseja excluir esta obra e TODAS as suas fotos?')) return;
-  try {
-    const photosQuery = query(collection(db, 'photos'), where('obraId', '==', obraId));
-    const photosSnapshot = await getDocs(photosQuery);
-    const batch = writeBatch(db);
-    photosSnapshot.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    await deleteDoc(doc(db, 'obras', obraId));
-    showToast('Obra excluída!', 'success');
-    loadObrasTree();
-  } catch (e) { showToast('Erro ao excluir obra', 'error'); }
+window.renamePhoto = async function(id, name) {
+  const nn = prompt('Novo nome:', name); if (!nn) return;
+  try { await updateDoc(doc(db, 'photos', id), {empregado: nn.trim()}); toast('Renomeado!', 'success'); loadObrasTree(); } catch (e) { toast('Erro', 'error'); }
 };
 
-window.deleteDateFolder = async function(date) {
-  if (!confirm(`Excluir TODAS as fotos de ${formatDateBR(date)}?`)) return;
-  try {
-    const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', date));
-    const snapshot = await getDocs(q);
-    const batch = writeBatch(db);
-    snapshot.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    showToast('Fotos excluídas!', 'success');
-    loadObrasTree();
-  } catch (e) { showToast('Erro ao excluir', 'error'); }
+window.deletePhoto = async function(id) {
+  if (!confirm('Excluir foto?')) return;
+  try { await deleteDoc(doc(db, 'photos', id)); toast('Foto excluida!', 'success'); loadObrasTree(); } catch (e) { toast('Erro', 'error'); }
 };
 
-window.renamePhoto = async function(photoId, currentName) {
-  const newName = prompt('Novo nome:', currentName);
-  if (!newName) return;
-  try {
-    await updateDoc(doc(db, 'photos', photoId), { empregado: newName.trim() });
-    showToast('Foto renomeada!', 'success');
-    loadObrasTree();
-  } catch (e) { showToast('Erro ao renomear', 'error'); }
-};
-
-window.deletePhoto = async function(photoId) {
-  if (!confirm('Excluir esta foto?')) return;
-  try {
-    await deleteDoc(doc(db, 'photos', photoId));
-    showToast('Foto excluída!', 'success');
-    loadObrasTree();
-  } catch (e) { showToast('Erro ao excluir', 'error'); }
-};
-
-// ===== DOWNLOAD =====
+// DOWNLOAD
 window.loadDownloadFilters = async function() {
-  const empregadoSelect = document.getElementById('filterEmpregado');
-  const obraSelect = document.getElementById('filterObra');
-  empregadoSelect.innerHTML = '<option value="all">Todos os empregados</option>';
-  obraSelect.innerHTML = '<option value="all">Todas as obras</option>';
-
+  const fe = document.getElementById('fe'); const fo = document.getElementById('fo');
+  fe.innerHTML = '<option value="all">Todos</option>'; fo.innerHTML = '<option value="all">Todas</option>';
   try {
-    const empregados = new Set();
-    const obras = new Map();
-
-    const photosQuery = query(collection(db, 'photos'));
-    const photosSnapshot = await getDocs(photosQuery);
-    photosSnapshot.docs.forEach(d => {
-      const photo = d.data();
-      if (photo.empregado) empregados.add(photo.empregado);
-      if (photo.obraId && photo.obraName) obras.set(photo.obraId, photo.obraName);
-    });
-
-    empregados.forEach(emp => {
-      const opt = document.createElement('option');
-      opt.value = emp; opt.textContent = emp;
-      empregadoSelect.appendChild(opt);
-    });
-
-    obras.forEach((name, id) => {
-      const opt = document.createElement('option');
-      opt.value = id; opt.textContent = name;
-      obraSelect.appendChild(opt);
-    });
-  } catch (e) { console.error(e); }
+    const emps = new Set(); const obs = new Map();
+    const pq = query(collection(db, 'photos')); const ps = await getDocs(pq);
+    ps.docs.forEach(d => { const p = d.data(); if (p.empregado) emps.add(p.empregado); if (p.obraId && p.obraName) obs.set(p.obraId, p.obraName); });
+    emps.forEach(e => { const o = document.createElement('option'); o.value = e; o.textContent = e; fe.appendChild(o); });
+    obs.forEach((n, id) => { const o = document.createElement('option'); o.value = id; o.textContent = n; fo.appendChild(o); });
+  } catch (e) {}
 };
 
 window.onObraFilterChange = async function() {
-  const obraId = document.getElementById('filterObra').value;
-  const dateSelect = document.getElementById('filterDate');
-  dateSelect.innerHTML = '<option value="all">Todas as datas</option>';
-
-  if (obraId === 'all') {
-    dateSelect.disabled = true;
-  } else {
-    dateSelect.disabled = false;
-    try {
-      const dates = new Set();
-      const q = query(collection(db, 'photos'), where('obraId', '==', obraId));
-      const snapshot = await getDocs(q);
-      snapshot.docs.forEach(d => { if (d.data().date) dates.add(d.data().date); });
-      Array.from(dates).sort().reverse().forEach(date => {
-        const opt = document.createElement('option');
-        opt.value = date; opt.textContent = formatDateBR(date);
-        dateSelect.appendChild(opt);
-      });
-    } catch (e) { console.error(e); }
+  const oid = document.getElementById('fo').value; const fd = document.getElementById('fd');
+  fd.innerHTML = '<option value="all">Todas</option>';
+  if (oid === 'all') { fd.disabled = true; }
+  else {
+    fd.disabled = false;
+    try { const ds = new Set(); const q = query(collection(db, 'photos'), where('obraId', '==', oid)); const s = await getDocs(q); s.docs.forEach(d => { if (d.data().date) ds.add(d.data().date); }); Array.from(ds).sort().reverse().forEach(dt => { const o = document.createElement('option'); o.value = dt; o.textContent = fmtDate(dt); fd.appendChild(o); }); } catch (e) {}
   }
 };
 
-window.applyFilters = async function() {
-  await loadPhotosForDownload();
-};
+window.applyFilters = async function() { await loadPhotosForDownload(); };
 
 window.loadPhotosForDownload = async function() {
-  const empregado = document.getElementById('filterEmpregado').value;
-  const obraId = document.getElementById('filterObra').value;
-  const date = document.getElementById('filterDate').value;
-  const grid = document.getElementById('photoGrid');
-  const countEl = document.getElementById('downloadCount');
-
-  grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando fotos...</div>';
-
+  const emp = document.getElementById('fe').value; const oid = document.getElementById('fo').value; const dt = document.getElementById('fd').value;
+  const g = document.getElementById('pg'); const dc = document.getElementById('dc');
+  g.innerHTML = '<div class="ld"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
   try {
-    let q = query(collection(db, 'photos'), orderBy('createdAt', 'desc'));
-    const snapshot = await getDocs(q);
-    allPhotos = [];
-    snapshot.docs.forEach(d => {
-      const photo = { id: d.id, ...d.data() };
-      if (empregado !== 'all' && photo.empregado !== empregado) return;
-      if (obraId !== 'all' && photo.obraId !== obraId) return;
-      if (date !== 'all' && photo.date !== date) return;
-      allPhotos.push(photo);
+    const q = query(collection(db, 'photos'), orderBy('createdAt', 'desc')); const s = await getDocs(q);
+    allPhotos = []; s.docs.forEach(d => { const p = {id: d.id, ...d.data()}; if (emp !== 'all' && p.empregado !== emp) return; if (oid !== 'all' && p.obraId !== oid) return; if (dt !== 'all' && p.date !== dt) return; allPhotos.push(p); });
+    dc.textContent = allPhotos.length + ' foto(s)'; selectedPhotos.clear(); updSel();
+    if (allPhotos.length === 0) { g.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+    g.innerHTML = '';
+    allPhotos.forEach(p => {
+      const d = document.createElement('div'); d.className = 'pc';
+      d.innerHTML = '<div class="ps"><input type="checkbox" onchange="togglePhotoSelect(\'' + p.id + '\')" id="chk-' + p.id + '"></div><img src="' + p.url + '" loading="lazy" onclick="openModal(\'' + p.url + '\')"><div class="photo-info"><div class="pn">' + (p.empregado || 'Sem nome') + '</div><div class="pm">' + (p.obraName || 'Sem obra') + ' | ' + fmtDate(p.date) + '</div></div>';
+      g.appendChild(d);
     });
-
-    countEl.textContent = `${allPhotos.length} foto(s) encontrada(s)`;
-    selectedPhotos.clear();
-    updateSelectionCounter();
-
-    if (allPhotos.length === 0) {
-      grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>Nenhuma foto encontrada</p></div>';
-      return;
-    }
-
-    grid.innerHTML = '';
-    allPhotos.forEach(photo => {
-      const card = document.createElement('div');
-      card.className = 'photo-card';
-      card.innerHTML = `
-        <div class="photo-select">
-          <input type="checkbox" onchange="togglePhotoSelect('${photo.id}')" id="chk-${photo.id}">
-        </div>
-        <img src="${photo.url}" alt="${photo.empregado}" loading="lazy" onclick="openModal('${photo.url}')">
-        <div class="photo-info">
-          <div class="photo-name">${photo.empregado || 'Sem nome'}</div>
-          <div class="photo-meta">${photo.obraName || 'Sem obra'} | ${formatDateBR(photo.date)}</div>
-        </div>`;
-      grid.appendChild(card);
-    });
-  } catch (e) {
-    grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Erro ao carregar fotos</p></div>';
-  }
+  } catch (e) { g.innerHTML = '<div class="es"><i class="fas fa-exclamation-circle"></i><p>Erro</p></div>'; }
 };
 
-window.togglePhotoSelect = function(photoId) {
-  if (selectedPhotos.has(photoId)) selectedPhotos.delete(photoId);
-  else selectedPhotos.add(photoId);
-  updateSelectionCounter();
-};
+window.togglePhotoSelect = function(id) { if (selectedPhotos.has(id)) selectedPhotos.delete(id); else selectedPhotos.add(id); updSel(); };
 
 window.toggleSelectAll = function() {
-  const checkboxes = document.querySelectorAll('.photo-select input[type="checkbox"]');
-  if (selectedPhotos.size === allPhotos.length) {
-    selectedPhotos.clear();
-    checkboxes.forEach(cb => cb.checked = false);
-  } else {
-    selectedPhotos.clear();
-    allPhotos.forEach(p => selectedPhotos.add(p.id));
-    checkboxes.forEach(cb => cb.checked = true);
-  }
-  updateSelectionCounter();
+  const cb = document.querySelectorAll('.ps input[type="checkbox"]');
+  if (selectedPhotos.size === allPhotos.length) { selectedPhotos.clear(); cb.forEach(c => c.checked = false); }
+  else { selectedPhotos.clear(); allPhotos.forEach(p => selectedPhotos.add(p.id)); cb.forEach(c => c.checked = true); }
+  updSel();
 };
 
-function updateSelectionCounter() {
-  const counter = document.getElementById('selectionCounter');
-  if (selectedPhotos.size > 0) {
-    counter.textContent = `${selectedPhotos.size} selecionada(s)`;
-    counter.classList.remove('hidden');
-  } else {
-    counter.classList.add('hidden');
-  }
+function updSel() {
+  const sc = document.getElementById('sc2');
+  if (selectedPhotos.size > 0) { sc.textContent = selectedPhotos.size + ' selecionada(s)'; sc.classList.remove('hidden'); }
+  else sc.classList.add('hidden');
 }
 
 window.downloadSelected = async function() {
-  if (selectedPhotos.size === 0) { showToast('Selecione pelo menos uma foto', 'error'); return; }
-  const selected = allPhotos.filter(p => selectedPhotos.has(p.id));
-
-  if (selected.length === 1) {
-    try {
-      const response = await fetch(selected[0].url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${selected[0].empregado || 'foto'}_${selected[0].date || 'sem-data'}.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-      showToast('Download iniciado!', 'success');
-    } catch (e) { showToast('Erro no download', 'error'); }
+  if (selectedPhotos.size === 0) { toast('Selecione fotos', 'error'); return; }
+  const sel = allPhotos.filter(p => selectedPhotos.has(p.id));
+  if (sel.length === 1) {
+    try { const r = await fetch(sel[0].url); const bl = await r.blob(); const u = window.URL.createObjectURL(bl); const a = document.createElement('a'); a.href = u; a.download = (sel[0].empregado || 'foto') + '_' + (sel[0].date || 'sem-data') + '.jpg'; document.body.appendChild(a); a.click(); document.body.removeChild(a); window.URL.revokeObjectURL(u); toast('Download OK!', 'success'); } catch (e) { toast('Erro download', 'error'); }
   } else {
-    showToast('Preparando ZIP...', 'success');
-    try {
-      const zip = new JSZip();
-      const folder = zip.folder('fotos-vistoria');
-      for (let i = 0; i < selected.length; i++) {
-        const photo = selected[i];
-        const response = await fetch(photo.url);
-        const blob = await response.blob();
-        const filename = `${photo.empregado || 'foto'}_${photo.date || 'sem-data'}_${i+1}.jpg`;
-        folder.file(filename, blob);
-      }
-      const content = await zip.generateAsync({ type: 'blob' });
-      const url = window.URL.createObjectURL(content);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `fotos-vistoria-${new Date().toISOString().split('T')[0]}.zip`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-      showToast('ZIP baixado!', 'success');
-    } catch (e) { showToast('Erro ao criar ZIP', 'error'); }
+    toast('Preparando ZIP...', 'success');
+    try { const z = new JSZip(); const f = z.folder('fotos'); for (let i = 0; i < sel.length; i++) { const p = sel[i]; const r = await fetch(p.url); const bl = await r.blob(); f.file((p.empregado || 'foto') + '_' + (p.date || 'sem-data') + '_' + (i+1) + '.jpg', bl); } const c = await z.generateAsync({type:'blob'}); const u = window.URL.createObjectURL(c); const a = document.createElement('a'); a.href = u; a.download = 'fotos-' + new Date().toISOString().split('T')[0] + '.zip'; document.body.appendChild(a); a.click(); document.body.removeChild(a); window.URL.revokeObjectURL(u); toast('ZIP OK!', 'success'); } catch (e) { toast('Erro ZIP', 'error'); }
   }
 };
 
-// ===== MODAL =====
-window.openModal = function(url) {
-  document.getElementById('modalImage').src = url;
-  document.getElementById('photoModal').classList.remove('hidden');
-};
+// MODAL
+window.openModal = function(url) { document.getElementById('mi').src = url; document.getElementById('md').classList.remove('hidden'); };
+window.closeModal = function() { document.getElementById('md').classList.add('hidden'); };
 
-window.closeModal = function() {
-  document.getElementById('photoModal').classList.add('hidden');
-};
-
-// ===== UTILITIES =====
-function formatDateBR(dateStr) {
-  if (!dateStr || dateStr === 'Sem data') return 'Sem data';
-  const parts = dateStr.split('-');
-  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  return dateStr;
-}
-
-function getAuthErrorMessage(code) {
-  const msgs = {
-    'auth/invalid-email': 'Email inválido',
-    'auth/user-disabled': 'Conta desativada',
-    'auth/user-not-found': 'Usuário não encontrado',
-    'auth/wrong-password': 'Senha incorreta',
-    'auth/email-already-in-use': 'Email já cadastrado',
-    'auth/weak-password': 'Senha muito fraca',
-    'auth/invalid-credential': 'Credenciais inválidas'
-  };
-  return msgs[code] || 'Erro de autenticação';
-}
-
-function showToast(message, type) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.className = `toast ${type} show`;
-  setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-function updateHeaderUserInfo() {
-  if (currentUser) {
-    document.getElementById('headerUserName').textContent = currentUser.displayName || 'Usuário';
-    document.getElementById('headerUserEmail').textContent = currentUser.email;
-  }
-}
-
-// ===== AUTH STATE =====
+// AUTH STATE
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    currentUser = user;
-    updateHeaderUserInfo();
-    document.getElementById('appHeader').style.display = 'block';
-    showDashboard();
+    currentUser = user; document.getElementById('hun').textContent = user.displayName || 'Usuario';
+    document.getElementById('hue').textContent = user.email; document.getElementById('hdr').style.display = 'block';
+    hideAll(); document.getElementById('dashScreen').classList.remove('hidden');
   } else {
-    currentUser = null;
-    document.getElementById('appHeader').style.display = 'none';
-    hideAllScreens();
-    document.getElementById('loginScreen').classList.remove('hidden');
+    currentUser = null; document.getElementById('hdr').style.display = 'none';
+    hideAll(); document.getElementById('loginScreen').classList.remove('hidden');
   }
 });
-</script>
-</body>
-</html>
-
-
-// ===== UTILITIES =====
-function formatDateBR(dateStr) {
-  if (!dateStr || dateStr === 'Sem data') return 'Sem data';
-  const parts = dateStr.split('-');
-  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  return dateStr;
-}
-
-function getAuthErrorMessage(code) {
-  const msgs = {
-    'auth/invalid-email': 'Email inválido',
-    'auth/user-disabled': 'Conta desativada',
-    'auth/user-not-found': 'Usuário não encontrado',
-    'auth/wrong-password': 'Senha incorreta',
-    'auth/email-already-in-use': 'Email já cadastrado',
-    'auth/weak-password': 'Senha muito fraca',
-    'auth/invalid-credential': 'Credenciais inválidas (verifique email e senha)',
-    'auth/invalid-login-credentials': 'Email ou senha incorretos',
-    'auth/network-request-failed': 'Erro de rede - verifique sua conexão',
-    'auth/too-many-requests': 'Muitas tentativas. Tente novamente mais tarde.',
-    'auth/unauthorized-domain': 'Domínio não autorizado. Contate o administrador.',
-    'auth/invalid-api-key': 'Chave de API inválida. Contate o administrador.'
-  };
-  return msgs[code] || ('Erro: ' + code);
-}
-
-function showToast(message, type) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.className = `toast ${type} show`;
-  setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-function updateHeaderUserInfo() {
-  if (currentUser) {
-    document.getElementById('headerUserName').textContent = currentUser.displayName || 'Usuário';
-    document.getElementById('headerUserEmail').textContent = currentUser.email;
-  }
-}
-
-// ===== AUTH STATE =====
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    currentUser = user;
-    updateHeaderUserInfo();
-    document.getElementById('appHeader').style.display = 'block';
-    showDashboard();
-    console.log("User logged in:", user.email);
-  } else {
-    currentUser = null;
-    document.getElementById('appHeader').style.display = 'none';
-    hideAllScreens();
-    document.getElementById('loginScreen').classList.remove('hidden');
-    console.log("No user logged in");
-  }
-});
-
-console.log("App loaded, waiting for auth state...");
 </script>
 </body>
 </html>
