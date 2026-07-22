@@ -275,12 +275,6 @@ let currentUser = null, allPhotos = [], selectedPhotos = new Set();
 let obraViewLevel = 'list', currentObraId = null, currentDateFolder = null, currentObraName = '';
 let selectedFiles = [];
 
-function showDbg(msg) {
-  const el = document.getElementById('dbx');
-  if (el) { el.textContent = 'DEBUG: ' + msg; el.classList.remove('hidden'); }
-  console.log('DEBUG:', msg);
-}
-
 function toast(msg, type) {
   const t = document.getElementById('tst');
   t.textContent = msg;
@@ -332,7 +326,7 @@ window.registerUser = async function() {
     await updateProfile(uc.user, { displayName: name });
     toast('Conta criada!', 'success');
     toggleRegister();
-  } catch (e) { showDbg('REG:' + e.code + ' ' + e.message); toast(errMsg(e.code), 'error'); }
+  } catch (e) { toast(errMsg(e.code), 'error'); }
 };
 
 window.loginUser = async function() {
@@ -342,7 +336,7 @@ window.loginUser = async function() {
   try {
     await signInWithEmailAndPassword(auth, email, pass);
     toast('Login OK!', 'success');
-  } catch (e) { showDbg('LOGIN:' + e.code + ' ' + e.message); toast(errMsg(e.code), 'error'); }
+  } catch (e) { toast(errMsg(e.code), 'error'); }
 };
 
 window.logoutUser = async function() {
@@ -477,7 +471,7 @@ window.uploadPhotos = async function() {
   setTimeout(() => { pcc.classList.add('hidden'); pb.style.width = '0%'; selectedFiles = []; document.getElementById('ppv').innerHTML = ''; document.getElementById('pc').textContent = ''; document.getElementById('ph').value = ''; document.getElementById('ua').value = ''; document.getElementById('uan').value = ''; document.getElementById('non').value = ''; document.getElementById('noc').classList.add('hidden'); toast('Fotos enviadas!', 'success'); }, 500);
 };
 
-// OBRAS TREE
+// OBRAS TREE - using orderBy with indexes
 window.loadObrasTree = async function() {
   const c = document.getElementById('otc'); const bc = document.getElementById('bc');
   c.innerHTML = '<div class="ld"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
@@ -493,25 +487,29 @@ window.loadObrasTree = async function() {
         div.innerHTML = '<div class="oh" onclick="openObra(\'' + d.id + '\',\'' + n + '\')"><i class="fas fa-building"></i><span class="on">' + o.name + '</span></div><div class="oa"><button class="bi" onclick="event.stopPropagation();renameObra(\'' + d.id + '\',\'' + n + '\')" title="Renomear"><i class="fas fa-edit"></i></button><button class="bi" style="color:var(--d)" onclick="event.stopPropagation();deleteObra(\'' + d.id + '\')" title="Excluir"><i class="fas fa-trash"></i></button></div>';
         c.appendChild(div);
       });
-    } catch (e) { toast('Erro carregar obras', 'error'); }
+    } catch (e) { console.error(e); toast('Erro carregar obras', 'error'); }
   } else if (obraViewLevel === 'obra' && currentObraId) {
     bc.innerHTML = '<span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'list\';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span>' + currentObraName + '</span>';
     try {
-      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), orderBy('date', 'desc')); const s = await getDocs(q);
-      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+      // Uses index1: obraId ASC + date DESC + __name__ DESC
+      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), orderBy('date', 'desc'));
+      const s = await getDocs(q);
+      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto nesta obra</p></div>'; return; }
       const dg = {}; s.docs.forEach(d => { const p = d.data(); const dt = p.date || 'Sem data'; if (!dg[dt]) dg[dt] = []; dg[dt].push({id:d.id,...p}); });
       c.innerHTML = '';
-      Object.keys(dg).sort().reverse().forEach(dt => {
+      Object.keys(dg).forEach(dt => {
         const div = document.createElement('div'); div.className = 'df2';
         div.innerHTML = '<div class="dh" onclick="openDateFolder(\'' + dt + '\')"><i class="fas fa-calendar-alt"></i><span class="dn">' + fmtDate(dt) + '</span><span class="dc2">(' + dg[dt].length + ')</span></div><div class="da2"><button class="bi" style="color:var(--d)" onclick="event.stopPropagation();deleteDateFolder(\'' + dt + '\')" title="Excluir"><i class="fas fa-trash"></i></button></div>';
         c.appendChild(div);
       });
-    } catch (e) { toast('Erro carregar datas', 'error'); }
+    } catch (e) { console.error(e); toast('Erro carregar datas', 'error'); }
   } else if (obraViewLevel === 'date' && currentObraId && currentDateFolder) {
     bc.innerHTML = '<span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'list\';currentObraId=null;currentDateFolder=null;loadObrasTree();">Obras</span> <i class="fas fa-chevron-right"></i> <span style="cursor:pointer;color:var(--p)" onclick="obraViewLevel=\'obra\';currentDateFolder=null;loadObrasTree();">' + currentObraName + '</span> <i class="fas fa-chevron-right"></i> <span>' + fmtDate(currentDateFolder) + '</span>';
     try {
-      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', currentDateFolder), orderBy('createdAt', 'desc')); const s = await getDocs(q);
-      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+      // Uses index2: obraId ASC + date DESC + createdAt DESC + __name__ DESC
+      const q = query(collection(db, 'photos'), where('obraId', '==', currentObraId), where('date', '==', currentDateFolder), orderBy('createdAt', 'desc'));
+      const s = await getDocs(q);
+      if (s.empty) { c.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto nesta data</p></div>'; return; }
       const g = document.createElement('div'); g.className = 'opg';
       s.docs.forEach(d => {
         const p = d.data(); const n = (p.empregado || 'foto').replace(/'/g, "\\'");
@@ -520,7 +518,7 @@ window.loadObrasTree = async function() {
         g.appendChild(div);
       });
       c.innerHTML = ''; c.appendChild(g);
-    } catch (e) { toast('Erro carregar fotos', 'error'); }
+    } catch (e) { console.error(e); toast('Erro carregar fotos', 'error'); }
   }
 };
 
@@ -558,7 +556,7 @@ window.loadDownloadFilters = async function() {
   fe.innerHTML = '<option value="all">Todos</option>'; fo.innerHTML = '<option value="all">Todas</option>';
   try {
     const emps = new Set(); const obs = new Map();
-    const pq = query(collection(db, 'photos')); const ps = await getDocs(pq);
+    const pq = query(collection(db, 'photos'), orderBy('createdAt', 'desc')); const ps = await getDocs(pq);
     ps.docs.forEach(d => { const p = d.data(); if (p.empregado) emps.add(p.empregado); if (p.obraId && p.obraName) obs.set(p.obraId, p.obraName); });
     emps.forEach(e => { const o = document.createElement('option'); o.value = e; o.textContent = e; fe.appendChild(o); });
     obs.forEach((n, id) => { const o = document.createElement('option'); o.value = id; o.textContent = n; fo.appendChild(o); });
@@ -571,7 +569,7 @@ window.onObraFilterChange = async function() {
   if (oid === 'all') { fd.disabled = true; }
   else {
     fd.disabled = false;
-    try { const ds = new Set(); const q = query(collection(db, 'photos'), where('obraId', '==', oid)); const s = await getDocs(q); s.docs.forEach(d => { if (d.data().date) ds.add(d.data().date); }); Array.from(ds).sort().reverse().forEach(dt => { const o = document.createElement('option'); o.value = dt; o.textContent = fmtDate(dt); fd.appendChild(o); }); } catch (e) {}
+    try { const ds = new Set(); const q = query(collection(db, 'photos'), where('obraId', '==', oid), orderBy('date', 'desc')); const s = await getDocs(q); s.docs.forEach(d => { if (d.data().date) ds.add(d.data().date); }); Array.from(ds).forEach(dt => { const o = document.createElement('option'); o.value = dt; o.textContent = fmtDate(dt); fd.appendChild(o); }); } catch (e) {}
   }
 };
 
@@ -585,14 +583,14 @@ window.loadPhotosForDownload = async function() {
     const q = query(collection(db, 'photos'), orderBy('createdAt', 'desc')); const s = await getDocs(q);
     allPhotos = []; s.docs.forEach(d => { const p = {id: d.id, ...d.data()}; if (emp !== 'all' && p.empregado !== emp) return; if (oid !== 'all' && p.obraId !== oid) return; if (dt !== 'all' && p.date !== dt) return; allPhotos.push(p); });
     dc.textContent = allPhotos.length + ' foto(s)'; selectedPhotos.clear(); updSel();
-    if (allPhotos.length === 0) { g.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto</p></div>'; return; }
+    if (allPhotos.length === 0) { g.innerHTML = '<div class="es"><i class="fas fa-images"></i><p>Nenhuma foto encontrada</p></div>'; return; }
     g.innerHTML = '';
     allPhotos.forEach(p => {
       const d = document.createElement('div'); d.className = 'pc';
       d.innerHTML = '<div class="ps"><input type="checkbox" onchange="togglePhotoSelect(\'' + p.id + '\')" id="chk-' + p.id + '"></div><img src="' + p.url + '" loading="lazy" onclick="openModal(\'' + p.url + '\')"><div class="photo-info"><div class="pn">' + (p.empregado || 'Sem nome') + '</div><div class="pm">' + (p.obraName || 'Sem obra') + ' | ' + fmtDate(p.date) + '</div></div>';
       g.appendChild(d);
     });
-  } catch (e) { g.innerHTML = '<div class="es"><i class="fas fa-exclamation-circle"></i><p>Erro</p></div>'; }
+  } catch (e) { console.error(e); g.innerHTML = '<div class="es"><i class="fas fa-exclamation-circle"></i><p>Erro ao carregar</p></div>'; }
 };
 
 window.togglePhotoSelect = function(id) { if (selectedPhotos.has(id)) selectedPhotos.delete(id); else selectedPhotos.add(id); updSel(); };
