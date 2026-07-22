@@ -9,91 +9,365 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
-body{background:#f0f2f5;min-height:100vh}
+html,body{height:100%;overflow-x:hidden}
+body{background:#f0f2f5}
 
-/* Header */
-.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:10px 15px;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
-.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+/* LOGIN / REGISTER */
+.auth-screen{
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#1a5276,#2980b9);
+  z-index:1;
+}
+.auth-screen.active{display:flex}
+.auth-box{
+  background:#fff;
+  padding:40px 35px;
+  border-radius:16px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+  width:100%;
+  max-width:400px;
+  text-align:center;
+}
+.auth-box .eye{font-size:50px;margin-bottom:10px}
+.auth-box h1{color:#1a5276;font-size:28px;margin-bottom:5px}
+.auth-box .subtitle{color:#7f8c8d;font-size:13px;margin-bottom:25px}
+.auth-box input{
+  width:100%;
+  padding:12px 15px;
+  margin-bottom:12px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+  transition:border-color 0.2s;
+}
+.auth-box input:focus{outline:none;border-color:#2980b9}
+.auth-box button{
+  width:100%;
+  padding:13px;
+  background:linear-gradient(135deg,#2980b9,#1a5276);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
+.auth-box button:hover{transform:translateY(-2px)}
+.auth-box .link{color:#2980b9;font-size:13px;margin-top:15px;cursor:pointer;text-decoration:underline}
+.auth-box .error{color:#e74c3c;font-size:13px;margin-top:10px;min-height:18px}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#1a5276,#2980b9);
+  color:#fff;
+  padding:10px 15px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  display:none;
+}
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
 .header-logo{display:flex;align-items:center;gap:10px}
 .header-logo .eye{font-size:28px}
 .header-logo h1{font-size:20px;font-weight:700}
 .header-logo span{font-size:11px;opacity:0.85;display:block}
 .header-actions{display:flex;gap:8px;align-items:center}
-.header-actions button{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all 0.2s}
+.header-actions button{
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;
+  padding:6px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;
+  transition:all 0.2s;
+}
 .header-actions button:hover{background:rgba(255,255,255,0.3)}
-.header-user{background:#154360;padding:6px 15px;font-size:12px;display:flex;justify-content:space-between;align-items:center;margin-top:8px;border-radius:4px}
+.header-user{
+  background:#154360;
+  padding:6px 15px;
+  font-size:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+  border-radius:4px;
+}
 .header-user span{opacity:0.9}
 
-/* Container */
-.container{max-width:1100px;margin:0 auto;padding:20px 15px}
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px 15px;
+}
 
-/* Telas */
-.screen{display:none}
-.screen.active{display:block}
+/* SCREENS */
+.app-screen{
+  display:none;
+  min-height:calc(100vh - 80px);
+}
+.app-screen.active{display:block}
 
-/* Login */
-.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a5276,#2980b9)}
-.login-box{background:#fff;padding:40px 35px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.3);width:100%;max-width:400px;text-align:center}
-.login-box .eye{font-size:50px;margin-bottom:10px}
-.login-box h1{color:#1a5276;font-size:28px;margin-bottom:5px}
-.login-box .subtitle{color:#7f8c8d;font-size:13px;margin-bottom:25px}
-.login-box input{width:100%;padding:12px 15px;margin-bottom:12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;transition:border-color 0.2s}
-.login-box input:focus{outline:none;border-color:#2980b9}
-.login-box button{width:100%;padding:13px;background:linear-gradient(135deg,#2980b9,#1a5276);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:transform 0.2s}
-.login-box button:hover{transform:translateY(-2px)}
-.login-box .link{color:#2980b9;font-size:13px;margin-top:15px;cursor:pointer;text-decoration:underline}
-.login-box .error{color:#e74c3c;font-size:13px;margin-top:10px;min-height:18px}
-
-/* Dashboard */
-.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px}
-.dashboard-card{background:#fff;border-radius:14px;padding:30px 20px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.08);cursor:pointer;transition:all 0.3s;border:2px solid transparent}
-.dashboard-card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0,0,0,0.15);border-color:#2980b9}
+/* DASHBOARD */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  margin-top:20px;
+}
+.dashboard-card{
+  background:#fff;
+  border-radius:14px;
+  padding:30px 20px;
+  text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  cursor:pointer;
+  transition:all 0.3s;
+  border:2px solid transparent;
+}
+.dashboard-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.15);
+  border-color:#2980b9;
+}
 .dashboard-card .icon{font-size:42px;margin-bottom:12px}
 .dashboard-card h3{color:#2c3e50;font-size:18px;margin-bottom:8px}
 .dashboard-card p{color:#7f8c8d;font-size:13px}
 
-/* Upload */
-.upload-form{background:#fff;border-radius:14px;padding:25px;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
+/* UPLOAD */
+.upload-form{
+  background:#fff;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
 .upload-form h2{color:#2c3e50;margin-bottom:20px;font-size:22px}
 .form-group{margin-bottom:15px}
-.form-group label{display:block;color:#555;font-size:13px;font-weight:600;margin-bottom:6px}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;transition:border-color 0.2s}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#2980b9}
+.form-group label{
+  display:block;
+  color:#555;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  padding:11px 14px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+  transition:border-color 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+  outline:none;
+  border-color:#2980b9;
+}
 .form-group textarea{min-height:80px;resize:vertical}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
 @media(max-width:600px){.form-row{grid-template-columns:1fr}}
 
-/* Photo preview */
-.photo-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:15px}
-.photo-preview-item{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1;background:#f5f5f5}
-.photo-preview-item img{width:100%;height:100%;object-fit:cover}
-.photo-preview-item .remove{position:absolute;top:4px;right:4px;background:rgba(231,76,60,0.9);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.photo-preview-item .name{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;padding:3px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Checkbox */
+.checkbox-group{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+  padding:12px;
+  background:#f8f9fa;
+  border-radius:8px;
+  border:1px solid #e0e0e0;
+}
+.checkbox-group input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.checkbox-group label{
+  color:#555;
+  font-size:14px;
+  cursor:pointer;
+  font-weight:500;
+  margin:0;
+}
 
-/* Buttons */
-.btn-primary{background:linear-gradient(135deg,#2980b9,#1a5276);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(41,128,185,0.3)}
-.btn-secondary{background:#ecf0f1;color:#555;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;transition:all 0.2s}
+/* Photo preview */
+.photo-preview{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+.photo-preview-item{
+  position:relative;
+  border-radius:8px;
+  overflow:hidden;
+  aspect-ratio:1;
+  background:#f5f5f5;
+}
+.photo-preview-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.photo-preview-item .remove{
+  position:absolute;
+  top:4px;
+  right:4px;
+  background:rgba(231,76,60,0.9);
+  color:#fff;
+  border:none;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.photo-preview-item .name{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  font-size:10px;
+  padding:3px 6px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* BUTTONS */
+.btn-primary{
+  background:linear-gradient(135deg,#2980b9,#1a5276);
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(41,128,185,0.3);
+}
+.btn-secondary{
+  background:#ecf0f1;
+  color:#555;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
 .btn-secondary:hover{background:#d5dbdb}
-.btn-danger{background:#e74c3c;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer}
+.btn-danger{
+  background:#e74c3c;
+  color:#fff;
+  border:none;
+  padding:8px 16px;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+}
 .btn-danger:hover{background:#c0392b}
-.btn-small{padding:5px 10px;font-size:12px;border-radius:5px;border:none;cursor:pointer}
+.btn-small{
+  padding:5px 10px;
+  font-size:12px;
+  border-radius:5px;
+  border:none;
+  cursor:pointer;
+}
 .btn-edit{background:#f39c12;color:#fff}
 .btn-edit:hover{background:#d68910}
 
-/* Vistorias */
-.vistorias-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+/* VISTORIAS */
+.vistorias-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+  gap:10px;
+}
 .vistorias-header h2{color:#2c3e50;font-size:22px}
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.filters input,.filters select{padding:10px 14px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;min-width:180px}
-.filters input:focus,.filters select:focus{outline:none;border-color:#2980b9}
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.filters input,
+.filters select{
+  padding:10px 14px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+  min-width:180px;
+}
+.filters input:focus,
+.filters select:focus{
+  outline:none;
+  border-color:#2980b9;
+}
 
 /* Tree */
-.tree-item{background:#fff;border-radius:10px;padding:15px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;transition:all 0.2s;border-left:4px solid #2980b9}
-.tree-item:hover{box-shadow:0 4px 15px rgba(0,0,0,0.1);transform:translateX(3px)}
-.tree-item-header{display:flex;justify-content:space-between;align-items:center}
-.tree-item-title{font-weight:600;color:#2c3e50;font-size:15px;display:flex;align-items:center;gap:8px}
-.tree-item-meta{color:#7f8c8d;font-size:12px;margin-top:4px}
+.tree-item{
+  background:#fff;
+  border-radius:10px;
+  padding:15px 18px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  cursor:pointer;
+  transition:all 0.2s;
+  border-left:4px solid #2980b9;
+}
+.tree-item:hover{
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  transform:translateX(3px);
+}
+.tree-item-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.tree-item-title{
+  font-weight:600;
+  color:#2c3e50;
+  font-size:15px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.tree-item-meta{
+  color:#7f8c8d;
+  font-size:12px;
+  margin-top:4px;
+}
 .tree-item-meta span{margin-right:12px}
 .tree-item-meta .creator{color:#2980b9;font-weight:500}
 .tree-item-meta .date{color:#27ae60}
@@ -101,70 +375,234 @@ body{background:#f0f2f5;min-height:100vh}
 .tree-children{padding-left:25px;margin-top:10px}
 
 /* Breadcrumb */
-.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.breadcrumb a{color:#2980b9;text-decoration:none;font-size:14px;cursor:pointer}
+.breadcrumb{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.breadcrumb a{
+  color:#2980b9;
+  text-decoration:none;
+  font-size:14px;
+  cursor:pointer;
+}
 .breadcrumb a:hover{text-decoration:underline}
 .breadcrumb span{color:#7f8c8d;font-size:14px}
 
 /* Photo grid */
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:15px}
-.photo-item{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:relative}
-.photo-item img{width:100%;height:140px;object-fit:cover;cursor:pointer}
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+.photo-item{
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  position:relative;
+}
+.photo-item img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  cursor:pointer;
+}
 .photo-item-info{padding:8px 10px}
-.photo-item-name{font-size:12px;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.photo-item-name{
+  font-size:12px;
+  color:#2c3e50;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 .photo-item-date{font-size:11px;color:#7f8c8d}
-.photo-item-actions{display:flex;gap:4px;padding:0 10px 10px}
+.photo-item-actions{
+  display:flex;
+  gap:4px;
+  padding:0 10px 10px;
+}
 
-/* Download */
-.download-filters{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,0.08);margin-bottom:20px}
+/* DOWNLOAD */
+.download-filters{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
 .download-filters h3{color:#2c3e50;margin-bottom:15px;font-size:18px}
-.download-grid .photo-item{cursor:pointer;border:3px solid transparent;transition:border-color 0.2s}
+.download-grid .photo-item{
+  cursor:pointer;
+  border:3px solid transparent;
+  transition:border-color 0.2s;
+}
 .download-grid .photo-item.selected{border-color:#2980b9}
-.download-grid .photo-item .check{position:absolute;top:8px;left:8px;width:24px;height:24px;background:#2980b9;color:#fff;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:14px;font-weight:bold}
+.download-grid .photo-item .check{
+  position:absolute;
+  top:8px;
+  left:8px;
+  width:24px;
+  height:24px;
+  background:#2980b9;
+  color:#fff;
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:bold;
+}
 .download-grid .photo-item.selected .check{display:flex}
-.download-actions{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:12px 25px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:none;align-items:center;gap:15px;z-index:100}
+.download-actions{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#2c3e50;
+  color:#fff;
+  padding:12px 25px;
+  border-radius:30px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  display:none;
+  align-items:center;
+  gap:15px;
+  z-index:100;
+}
 .download-actions.show{display:flex}
 
-/* Profile */
-.profile-card{background:#fff;border-radius:14px;padding:25px;box-shadow:0 4px 15px rgba(0,0,0,0.08);max-width:500px;margin:0 auto}
+/* PROFILE */
+.profile-card{
+  background:#fff;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  max-width:500px;
+  margin:0 auto;
+}
 .profile-card h2{color:#2c3e50;margin-bottom:20px;font-size:22px}
-.profile-section{margin-bottom:25px;padding-bottom:20px;border-bottom:1px solid #eee}
-.profile-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.profile-section{
+  margin-bottom:25px;
+  padding-bottom:20px;
+  border-bottom:1px solid #eee;
+}
+.profile-section:last-child{
+  border-bottom:none;
+  margin-bottom:0;
+  padding-bottom:0;
+}
 .profile-section h3{color:#555;font-size:16px;margin-bottom:12px}
 .profile-section p{color:#7f8c8d;font-size:13px;margin-bottom:12px}
 
-/* Modal */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200}
+/* MODAL */
+.modal-overlay{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+}
 .modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:14px;padding:25px;width:90%;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+.modal{
+  background:#fff;
+  border-radius:14px;
+  padding:25px;
+  width:90%;
+  max-width:400px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
 .modal h3{color:#2c3e50;margin-bottom:15px}
-.modal input{width:100%;padding:11px 14px;margin-bottom:12px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px}
+.modal input{
+  width:100%;
+  padding:11px 14px;
+  margin-bottom:12px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+}
 .modal input:focus{outline:none;border-color:#2980b9}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:15px}
+.modal-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:15px;
+}
 
-/* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:#2c3e50;color:#fff;padding:12px 20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.2);transform:translateY(100px);opacity:0;transition:all 0.3s;z-index:300;font-size:14px}
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#2c3e50;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:8px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  transform:translateY(100px);
+  opacity:0;
+  transition:all 0.3s;
+  z-index:300;
+  font-size:14px;
+}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:#27ae60}
 .toast.error{background:#e74c3c}
 
-/* Loading */
-.loading{text-align:center;padding:40px;color:#7f8c8d}
-.loading-spinner{width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:#2980b9;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}
+/* LOADING */
+.loading{
+  text-align:center;
+  padding:40px;
+  color:#7f8c8d;
+}
+.loading-spinner{
+  width:40px;
+  height:40px;
+  border:3px solid #e0e0e0;
+  border-top-color:#2980b9;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 15px;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Empty state */
-.empty-state{text-align:center;padding:50px 20px;color:#7f8c8d}
-.empty-state .icon{font-size:50px;margin-bottom:15px;opacity:0.5}
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;
+  padding:50px 20px;
+  color:#7f8c8d;
+}
+.empty-state .icon{
+  font-size:50px;
+  margin-bottom:15px;
+  opacity:0.5;
+}
 .empty-state h3{font-size:18px;color:#555;margin-bottom:8px}
 .empty-state p{font-size:14px}
 
-/* Progress bar */
-.progress-bar{width:100%;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:10px;display:none}
+/* PROGRESS BAR */
+.progress-bar{
+  width:100%;
+  height:8px;
+  background:#e0e0e0;
+  border-radius:4px;
+  overflow:hidden;
+  margin-top:10px;
+  display:none;
+}
 .progress-bar.show{display:block}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,#2980b9,#1a5276);width:0%;transition:width 0.3s}
+.progress-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,#2980b9,#1a5276);
+  width:0%;
+  transition:width 0.3s;
+}
 
-/* Responsive */
+/* RESPONSIVE */
 @media(max-width:600px){
   .header-logo h1{font-size:16px}
   .header-user{flex-direction:column;gap:4px;text-align:center}
@@ -176,8 +614,8 @@ body{background:#f0f2f5;min-height:100vh}
 </head>
 <body>
 
-<!-- ==================== HEADER ==================== -->
-<div id="header" class="header" style="display:none">
+<!-- HEADER -->
+<div id="header" class="header">
   <div class="header-top">
     <div class="header-logo">
       <span class="eye">👁️</span>
@@ -198,13 +636,13 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== LOGIN ==================== -->
-<div id="loginScreen" class="login-screen screen active">
-  <div class="login-box">
+<!-- LOGIN -->
+<div id="loginScreen" class="auth-screen active">
+  <div class="auth-box">
     <div class="eye">👁️</div>
     <h1>VisãoGIGOVMR</h1>
     <p class="subtitle">Repositório de Fotos — Caixa Econômica Federal</p>
-    <input type="email" id="loginEmail" placeholder="E-mail" value="">
+    <input type="email" id="loginEmail" placeholder="E-mail">
     <input type="password" id="loginPassword" placeholder="Senha">
     <button onclick="login()">Entrar</button>
     <p class="link" onclick="showRegister()">Criar nova conta</p>
@@ -212,9 +650,9 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== REGISTER ==================== -->
-<div id="registerScreen" class="login-screen screen">
-  <div class="login-box">
+<!-- REGISTER -->
+<div id="registerScreen" class="auth-screen">
+  <div class="auth-box">
     <div class="eye">👁️</div>
     <h1>Criar Conta</h1>
     <p class="subtitle">VisãoGIGOVMR — Caixa Econômica Federal</p>
@@ -228,8 +666,8 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== DASHBOARD ==================== -->
-<div id="dashboardScreen" class="screen">
+<!-- DASHBOARD -->
+<div id="dashboardScreen" class="app-screen">
   <div class="container">
     <div class="dashboard-grid">
       <div class="dashboard-card" onclick="showUpload()">
@@ -251,8 +689,8 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== UPLOAD ==================== -->
-<div id="uploadScreen" class="screen">
+<!-- UPLOAD -->
+<div id="uploadScreen" class="app-screen">
   <div class="container">
     <div class="upload-form">
       <h2>📤 Fazer Upload de Fotos</h2>
@@ -264,14 +702,20 @@ body{background:#f0f2f5;min-height:100vh}
 
       <div class="form-row">
         <div class="form-group">
-          <label>Cidade *</label>
-          <input type="text" id="uploadCidade" placeholder="Ex: São Paulo, Rio de Janeiro..." list="cidadesList">
-          <datalist id="cidadesList"></datalist>
+          <label>Cidade da Obra *</label>
+          <select id="uploadCidadeSelect" onchange="onCidadeChange()">
+            <option value="">Selecione ou crie nova...</option>
+            <option value="__new__">+ Criar nova cidade</option>
+          </select>
+          <input type="text" id="uploadCidadeNew" placeholder="Digite o nome da cidade" style="display:none;margin-top:8px">
         </div>
         <div class="form-group">
           <label>Obra *</label>
-          <input type="text" id="uploadObra" placeholder="Ex: Residencial Parque Verde..." list="obrasList">
-          <datalist id="obrasList"></datalist>
+          <select id="uploadObraSelect" onchange="onObraChange()">
+            <option value="">Selecione ou crie nova...</option>
+            <option value="__new__">+ Criar nova obra</option>
+          </select>
+          <input type="text" id="uploadObraNew" placeholder="Digite o nome da obra" style="display:none;margin-top:8px">
         </div>
       </div>
 
@@ -297,6 +741,11 @@ body{background:#f0f2f5;min-height:100vh}
         <textarea id="uploadNotes" placeholder="Observações sobre a vistoria..."></textarea>
       </div>
 
+      <div class="checkbox-group">
+        <input type="checkbox" id="uploadMetadata" checked>
+        <label for="uploadMetadata">📷 Incluir metadados das fotos (GPS, data/hora da câmera, modelo)</label>
+      </div>
+
       <div class="form-group">
         <label>Fotos *</label>
         <input type="file" id="uploadPhotos" multiple accept="image/*" onchange="previewPhotos()">
@@ -313,8 +762,8 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== VISTORIAS ==================== -->
-<div id="vistoriasScreen" class="screen">
+<!-- VISTORIAS -->
+<div id="vistoriasScreen" class="app-screen">
   <div class="container">
     <div class="vistorias-header">
       <h2>📁 Vistorias</h2>
@@ -334,8 +783,8 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== DOWNLOAD ==================== -->
-<div id="downloadScreen" class="screen">
+<!-- DOWNLOAD -->
+<div id="downloadScreen" class="app-screen">
   <div class="container">
     <div class="vistorias-header">
       <h2>⬇️ Fazer Download</h2>
@@ -372,8 +821,8 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== PROFILE ==================== -->
-<div id="profileScreen" class="screen">
+<!-- PROFILE -->
+<div id="profileScreen" class="app-screen">
   <div class="container">
     <div class="profile-card">
       <h2>👤 Meu Perfil</h2>
@@ -403,7 +852,7 @@ body{background:#f0f2f5;min-height:100vh}
   </div>
 </div>
 
-<!-- ==================== MODALS ==================== -->
+<!-- MODALS -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <h3 id="modalTitle">Título</h3>
@@ -415,9 +864,10 @@ body{background:#f0f2f5;min-height:100vh}
 <!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- ==================== JAVASCRIPT ==================== -->
+<!-- JAVASCRIPT -->
 <script>
-// ===== FIREBASE CONFIG =====
+
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyBycTYSM1jgjS2zm4qaGnjDtH6JRMiw_ps",
   authDomain: "visao-gigovmr.firebaseapp.com",
@@ -427,11 +877,9 @@ const firebaseConfig = {
   appId: "1:604888719510:web:079cc2a42fc3689d5662b7"
 };
 
-// ===== CLOUDINARY CONFIG =====
 const CLOUDINARY_CLOUD = 'olfeaqsz';
 const CLOUDINARY_UPLOAD_PRESET = 'visao_gigovmr_unsigned';
 
-// ===== INIT =====
 let app, auth, db;
 let currentUser = null;
 let currentUserData = null;
@@ -449,7 +897,6 @@ try {
   console.error('Firebase init error:', e);
 }
 
-// ===== AUTH STATE =====
 if(auth){
   auth.onAuthStateChanged(user => {
     currentUser = user;
@@ -459,36 +906,52 @@ if(auth){
       document.getElementById('profileEmail').textContent = user.email;
       document.getElementById('profileName').textContent = user.displayName || user.email.split('@')[0];
       document.getElementById('header').style.display = 'block';
-      showScreen('dashboardScreen');
-      loadCidadesList();
+      showAppScreen('dashboardScreen');
+      loadCidadesForUpload();
     } else {
       document.getElementById('header').style.display = 'none';
-      showScreen('loginScreen');
+      showAuthScreen('loginScreen');
     }
   });
 }
 
-// ===== NAVIGATION =====
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showAuthScreen(id){
+  document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showAppScreen(id){
+  document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
 function goBack(){
-  const active = document.querySelector('.screen.active');
-  if(active.id === 'uploadScreen' || active.id === 'vistoriasScreen' || active.id === 'downloadScreen' || active.id === 'profileScreen'){
-    showScreen('dashboardScreen');
+  const active = document.querySelector('.app-screen.active');
+  if(active && (active.id === 'uploadScreen' || active.id === 'vistoriasScreen' || active.id === 'downloadScreen' || active.id === 'profileScreen')){
+    showAppScreen('dashboardScreen');
   }
 }
 
-function showLogin(){ showScreen('loginScreen'); }
-function showRegister(){ showScreen('registerScreen'); }
-function showUpload(){ showScreen('uploadScreen'); document.getElementById('uploadDate').value = new Date().toISOString().split('T')[0]; }
-function showVistorias(){ vistoriaState = { view: 'cidades', cidadeId: null, date: null }; renderVistorias(); showScreen('vistoriasScreen'); }
-function showDownload(){ loadDownloadFilters(); showScreen('downloadScreen'); }
-function showProfile(){ showScreen('profileScreen'); }
+function showLogin(){ showAuthScreen('loginScreen'); }
+function showRegister(){ showAuthScreen('registerScreen'); }
+function showUpload(){
+  showAppScreen('uploadScreen');
+  document.getElementById('uploadDate').value = new Date().toISOString().split('T')[0];
+  loadCidadesForUpload();
+}
+function showVistorias(){
+  vistoriaState = { view: 'cidades', cidadeId: null, date: null };
+  renderVistorias();
+  showAppScreen('vistoriasScreen');
+}
+function showDownload(){
+  loadDownloadFilters();
+  showAppScreen('downloadScreen');
+}
+function showProfile(){ showAppScreen('profileScreen'); }
 
-// ===== AUTH FUNCTIONS =====
 function login(){
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPassword').value;
@@ -506,8 +969,8 @@ function register(){
   const pass2 = document.getElementById('regPassword2').value;
   const err = document.getElementById('regError');
   if(!name||!email||!pass){ err.textContent='Preencha todos os campos'; return; }
-  if(pass.length<6){ err.textContent='Senha mínimo 6 caracteres'; return; }
-  if(pass!==pass2){ err.textContent='Senhas não conferem'; return; }
+  if(pass.length<6){ err.textContent='Senha minimo 6 caracteres'; return; }
+  if(pass!==pass2){ err.textContent='Senhas nao conferem'; return; }
   auth.createUserWithEmailAndPassword(email,pass).then(cred=>{
     return cred.user.updateProfile({displayName:name}).then(()=>{
       return db.collection('users').doc(cred.user.uid).set({name,email,createdAt:now()});
@@ -525,19 +988,81 @@ function logout(){
 
 function translateError(code){
   const map = {
-    'auth/invalid-email':'E-mail inválido',
-    'auth/user-disabled':'Usuário desabilitado',
-    'auth/user-not-found':'Usuário não encontrado',
+    'auth/invalid-email':'E-mail invalido',
+    'auth/user-disabled':'Usuario desabilitado',
+    'auth/user-not-found':'Usuario nao encontrado',
     'auth/wrong-password':'Senha incorreta',
-    'auth/email-already-in-use':'E-mail já cadastrado',
+    'auth/email-already-in-use':'E-mail ja cadastrado',
     'auth/weak-password':'Senha muito fraca',
     'auth/invalid-credential':'E-mail ou senha incorretos',
-    'auth/network-request-failed':'Erro de conexão'
+    'auth/network-request-failed':'Erro de conexao'
   };
-  return map[code] || 'Erro de autenticação';
+  return map[code] || 'Erro de autenticacao';
 }
 
-// ===== UPLOAD =====
+async function loadCidadesForUpload(){
+  if(!db) return;
+  const sel = document.getElementById('uploadCidadeSelect');
+  const currentVal = sel.value;
+  sel.innerHTML = '<option value="">Selecione ou crie nova...</option><option value="__new__">+ Criar nova cidade</option>';
+  try {
+    const snap = await db.collection('cidades').get();
+    const cidades = [];
+    snap.forEach(d => cidades.push({id:d.id, ...d.data()}));
+    cidades.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+    cidades.forEach(c => {
+      sel.innerHTML += '<option value="' + c.id + '">' + escapeHtml(c.name) + '</option>';
+    });
+    if(currentVal && currentVal !== '__new__') sel.value = currentVal;
+  } catch(e) {
+    console.error('Erro ao carregar cidades:', e);
+  }
+}
+
+function onCidadeChange(){
+  const sel = document.getElementById('uploadCidadeSelect');
+  const newInput = document.getElementById('uploadCidadeNew');
+  if(sel.value === '__new__'){
+    newInput.style.display = 'block';
+    newInput.focus();
+  } else {
+    newInput.style.display = 'none';
+    newInput.value = '';
+  }
+  loadObrasForCidade(sel.value);
+}
+
+async function loadObrasForCidade(cidadeId){
+  const sel = document.getElementById('uploadObraSelect');
+  sel.innerHTML = '<option value="">Selecione ou crie nova...</option><option value="__new__">+ Criar nova obra</option>';
+  if(!cidadeId || cidadeId === '__new__') return;
+  try {
+    const snap = await db.collection('photos').where('cidadeId','==',cidadeId).get();
+    const obras = new Set();
+    snap.forEach(d => {
+      const data = d.data();
+      if(data.obra) obras.add(data.obra);
+    });
+    Array.from(obras).sort().forEach(o => {
+      sel.innerHTML += '<option value="' + escapeHtml(o) + '">' + escapeHtml(o) + '</option>';
+    });
+  } catch(e) {
+    console.error('Erro ao carregar obras:', e);
+  }
+}
+
+function onObraChange(){
+  const sel = document.getElementById('uploadObraSelect');
+  const newInput = document.getElementById('uploadObraNew');
+  if(sel.value === '__new__'){
+    newInput.style.display = 'block';
+    newInput.focus();
+  } else {
+    newInput.style.display = 'none';
+    newInput.value = '';
+  }
+}
+
 function previewPhotos(){
   const input = document.getElementById('uploadPhotos');
   const preview = document.getElementById('photoPreview');
@@ -546,11 +1071,7 @@ function previewPhotos(){
   uploadFiles.forEach((file,i)=>{
     const reader = new FileReader();
     reader.onload = e => {
-      preview.innerHTML += `<div class="photo-preview-item">
-        <img src="${e.target.result}">
-        <button class="remove" onclick="removePhoto(${i})">×</button>
-        <div class="name">${file.name}</div>
-      </div>`;
+      preview.innerHTML += '<div class="photo-preview-item"><img src="' + e.target.result + '"><button class="remove" onclick="removePhoto(' + i + ')">x</button><div class="name">' + file.name + '</div></div>';
     };
     reader.readAsDataURL(file);
   });
@@ -563,43 +1084,95 @@ function removePhoto(idx){
 
 function clearUpload(){
   document.getElementById('uploadEmployee').value='';
-  document.getElementById('uploadCidade').value='';
-  document.getElementById('uploadObra').value='';
+  document.getElementById('uploadCidadeSelect').value='';
+  document.getElementById('uploadCidadeNew').value='';
+  document.getElementById('uploadCidadeNew').style.display='none';
+  document.getElementById('uploadObraSelect').value='';
+  document.getElementById('uploadObraNew').value='';
+  document.getElementById('uploadObraNew').style.display='none';
   document.getElementById('uploadDate').value=new Date().toISOString().split('T')[0];
   document.getElementById('uploadTipo').value='';
   document.getElementById('uploadNotes').value='';
   document.getElementById('uploadPhotos').value='';
+  document.getElementById('uploadMetadata').checked=true;
   uploadFiles=[];
   document.getElementById('photoPreview').innerHTML='';
+  loadCidadesForUpload();
 }
 
 async function submitUpload(){
   const employee = document.getElementById('uploadEmployee').value.trim();
-  const cidade = document.getElementById('uploadCidade').value.trim();
-  const obra = document.getElementById('uploadObra').value.trim();
+  const cidadeSel = document.getElementById('uploadCidadeSelect');
+  const cidadeNew = document.getElementById('uploadCidadeNew').value.trim();
+  const obraSel = document.getElementById('uploadObraSelect');
+  const obraNew = document.getElementById('uploadObraNew').value.trim();
   const date = document.getElementById('uploadDate').value;
   const tipo = document.getElementById('uploadTipo').value;
   const notes = document.getElementById('uploadNotes').value.trim();
+  const includeMetadata = document.getElementById('uploadMetadata').checked;
 
-  if(!employee||!cidade||!obra||!date||uploadFiles.length===0){
-    showToast('Preencha todos os campos obrigatórios e selecione fotos','error'); return;
+  let cidade = '';
+  let cidadeId = '';
+
+  if(cidadeSel.value === '__new__'){
+    if(!cidadeNew){ showToast('Digite o nome da cidade','error'); return; }
+    cidade = cidadeNew;
+  } else if(cidadeSel.value){
+    try {
+      const doc = await db.collection('cidades').doc(cidadeSel.value).get();
+      if(doc.exists){ cidade = doc.data().name; cidadeId = cidadeSel.value; }
+    } catch(e) {
+      showToast('Erro ao buscar cidade','error'); return;
+    }
+  } else {
+    showToast('Selecione ou crie uma cidade','error'); return;
+  }
+
+  let obra = '';
+  if(obraSel.value === '__new__'){
+    if(!obraNew){ showToast('Digite o nome da obra','error'); return; }
+    obra = obraNew;
+  } else if(obraSel.value){
+    obra = obraSel.value;
+  } else {
+    showToast('Selecione ou crie uma obra','error'); return;
+  }
+
+  if(!employee||!date||uploadFiles.length===0){
+    showToast('Preencha todos os campos obrigatorios e selecione fotos','error'); return;
+  }
+
+  if(cidadeSel.value === '__new__'){
+    try {
+      const ref = await db.collection('cidades').add({
+        name: cidade,
+        obra: obra,
+        createdBy: currentUser.uid,
+        createdByName: currentUserData.name,
+        createdAt: now()
+      });
+      cidadeId = ref.id;
+    } catch(e) {
+      showToast('Erro ao criar cidade','error'); return;
+    }
   }
 
   const progress = document.getElementById('uploadProgress');
   const fill = document.getElementById('uploadProgressFill');
   progress.classList.add('show');
 
-  // Criar ou buscar cidade
-  let cidadeRef = await getOrCreateCidade(cidade, obra);
-
   const total = uploadFiles.length;
   let done = 0;
 
   for(const file of uploadFiles){
     try {
+      let metadata = null;
+      if(includeMetadata){
+        metadata = await extractMetadata(file);
+      }
       const url = await uploadToCloudinary(file);
       await db.collection('photos').add({
-        cidadeId: cidadeRef.id,
+        cidadeId: cidadeId,
         cidade: cidade,
         obra: obra,
         date: date,
@@ -611,7 +1184,8 @@ async function submitUpload(){
         createdBy: currentUser.uid,
         createdByName: currentUserData.name,
         createdAt: now(),
-        userEmail: currentUser.email
+        userEmail: currentUser.email,
+        metadata: metadata
       });
       done++;
       fill.style.width = (done/total*100)+'%';
@@ -622,22 +1196,46 @@ async function submitUpload(){
 
   progress.classList.remove('show');
   fill.style.width = '0%';
-  showToast(`${done} foto(s) enviada(s) com sucesso!`,'success');
+  showToast(done + ' foto(s) enviada(s) com sucesso!','success');
   clearUpload();
-  loadCidadesList();
 }
 
-async function getOrCreateCidade(cidade, obra){
-  const snap = await db.collection('cidades').where('name','==',cidade).limit(1).get();
-  if(!snap.empty) return snap.docs[0];
-  const ref = await db.collection('cidades').add({
-    name: cidade,
-    obra: obra,
-    createdBy: currentUser.uid,
-    createdByName: currentUserData.name,
-    createdAt: now()
+async function extractMetadata(file){
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const arr = new Uint8Array(e.target.result);
+      let metadata = { fileName: file.name, fileSize: file.size, fileType: file.type };
+      if(arr.length > 2 && arr[0] === 0xFF && arr[1] === 0xD8){
+        let pos = 2;
+        while(pos < arr.length - 1){
+          if(arr[pos] === 0xFF){
+            const marker = arr[pos+1];
+            if(marker === 0xE1){
+              const len = (arr[pos+2] << 8) | arr[pos+3];
+              const exifData = arr.slice(pos+4, pos+4+len);
+              let str = '';
+              for(let i=0;i<exifData.length;i++) str += String.fromCharCode(exifData[i]);
+              if(str.includes('GPS')) metadata.hasGPS = true;
+              if(str.includes('DateTimeOriginal')){
+                const match = str.match(/DateTimeOriginal[\x00\s]+([\d: ]+)/);
+                if(match) metadata.cameraDateTime = match[1];
+              }
+              break;
+            }
+            if(marker === 0xD9) break;
+            const len = (arr[pos+2] << 8) | arr[pos+3];
+            pos += 2 + len;
+          } else {
+            pos++;
+          }
+        }
+      }
+      resolve(metadata);
+    };
+    reader.onerror = () => resolve({fileName: file.name, fileSize: file.size, fileType: file.type});
+    reader.readAsArrayBuffer(file.slice(0, 65536));
   });
-  return await ref.get();
 }
 
 async function uploadToCloudinary(file){
@@ -645,8 +1243,7 @@ async function uploadToCloudinary(file){
   form.append('file', file);
   form.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
   form.append('cloud_name', CLOUDINARY_CLOUD);
-
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+  const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
     method: 'POST',
     body: form
   });
@@ -655,7 +1252,6 @@ async function uploadToCloudinary(file){
   return data.secure_url;
 }
 
-// ===== VISTORIAS (ÁRVORE) =====
 async function renderVistorias(){
   const content = document.getElementById('vistoriasContent');
   const breadcrumb = document.getElementById('vistoriasBreadcrumb');
@@ -665,86 +1261,82 @@ async function renderVistorias(){
   if(vistoriaState.view === 'cidades'){
     breadcrumb.innerHTML = '<span>📁 Todas as Cidades</span>';
     content.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Carregando...</div>';
+    try {
+      const snap = await db.collection('cidades').get();
+      allCidadesCache = [];
+      snap.forEach(d => allCidadesCache.push({id:d.id,...d.data()}));
+      allCidadesCache.sort((a,b) => (a.name||'').localeCompare(b.name||''));
 
-    const snap = await db.collection('cidades').get();
-    allCidadesCache = [];
-    snap.forEach(d => allCidadesCache.push({id:d.id,...d.data()}));
+      let filtered = allCidadesCache;
+      if(filterCidade) filtered = filtered.filter(c => (c.name||'').toLowerCase().includes(filterCidade));
+      if(filterUsuario) filtered = filtered.filter(c => (c.createdByName||'').toLowerCase().includes(filterUsuario));
 
-    // Ordenar em memória
-    allCidadesCache.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+      if(filtered.length === 0){
+        content.innerHTML = '<div class="empty-state"><div class="icon">📁</div><h3>Nenhuma cidade encontrada</h3><p>Crie uma nova cidade ao fazer upload de fotos.</p></div>';
+        return;
+      }
 
-    // Aplicar filtros
-    let filtered = allCidadesCache;
-    if(filterCidade) filtered = filtered.filter(c => (c.name||'').toLowerCase().includes(filterCidade));
-    if(filterUsuario) filtered = filtered.filter(c => (c.createdByName||'').toLowerCase().includes(filterUsuario) || (c.createdBy||'').toLowerCase().includes(filterUsuario));
-
-    if(filtered.length === 0){
-      content.innerHTML = '<div class="empty-state"><div class="icon">📁</div><h3>Nenhuma cidade encontrada</h3><p>Crie uma nova cidade ao fazer upload de fotos.</p></div>';
-      return;
+      let html = '';
+      for(const c of filtered){
+        const countSnap = await db.collection('photos').where('cidadeId','==',c.id).get();
+        const count = countSnap.size;
+        html += '<div class="tree-item" onclick="openCidade(\'' + c.id + '\', \'' + escapeHtml(c.name) + '\')">' +
+          '<div class="tree-item-header"><div>' +
+          '<div class="tree-item-title">🏙️ ' + escapeHtml(c.name) + ' — ' + escapeHtml(c.obra||'') + '</div>' +
+          '<div class="tree-item-meta">' +
+          '<span class="creator">👤 ' + escapeHtml(c.createdByName||'Desconhecido') + '</span>' +
+          '<span class="date">📅 ' + formatDate(c.createdAt) + '</span>' +
+          '<span>📸 ' + count + ' foto(s)</span>' +
+          '</div></div>' +
+          '<div class="tree-item-actions">' +
+          '<button class="btn-small btn-edit" onclick="event.stopPropagation();renameCidade(\'' + c.id + '\',\'' + escapeHtml(c.name) + '\',\'' + escapeHtml(c.obra||'') + '\')">✏️</button>' +
+          '<button class="btn-small btn-danger" onclick="event.stopPropagation();deleteCidade(\'' + c.id + '\')">🗑️</button>' +
+          '</div></div></div>';
+      }
+      content.innerHTML = html;
+    } catch(e) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar</h3><p>Tente novamente.</p></div>';
     }
-
-    let html = '';
-    for(const c of filtered){
-      const countSnap = await db.collection('photos').where('cidadeId','==',c.id).get();
-      const count = countSnap.size;
-      html += `<div class="tree-item" onclick="openCidade('${c.id}', '${escapeHtml(c.name)}')">
-        <div class="tree-item-header">
-          <div>
-            <div class="tree-item-title">🏙️ ${escapeHtml(c.name)} — ${escapeHtml(c.obra||'')}</div>
-            <div class="tree-item-meta">
-              <span class="creator">👤 ${escapeHtml(c.createdByName||'Desconhecido')}</span>
-              <span class="date">📅 ${formatDate(c.createdAt)}</span>
-              <span>📸 ${count} foto(s)</span>
-            </div>
-          </div>
-          <div class="tree-item-actions">
-            <button class="btn-small btn-edit" onclick="event.stopPropagation();renameCidade('${c.id}','${escapeHtml(c.name)}','${escapeHtml(c.obra||'')}')">✏️</button>
-            <button class="btn-small btn-danger" onclick="event.stopPropagation();deleteCidade('${c.id}')">🗑️</button>
-          </div>
-        </div>
-      </div>`;
-    }
-    content.innerHTML = html;
 
   } else if(vistoriaState.view === 'dates'){
     const cidadeId = vistoriaState.cidadeId;
     const cidadeDoc = allCidadesCache.find(c => c.id === cidadeId);
     const cidadeName = cidadeDoc ? cidadeDoc.name : 'Cidade';
 
-    breadcrumb.innerHTML = `<a onclick="renderVistorias()">📁 Todas as Cidades</a> <span>›</span> <span>🏙️ ${escapeHtml(cidadeName)}</span>`;
+    breadcrumb.innerHTML = '<a onclick="backToCidades()">📁 Todas as Cidades</a> <span>›</span> <span>🏙️ ' + escapeHtml(cidadeName) + '</span>';
     content.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Carregando datas...</div>';
 
-    const snap = await db.collection('photos').where('cidadeId','==',cidadeId).get();
-    const datesMap = new Map();
-    snap.forEach(d => {
-      const data = d.data();
-      if(!datesMap.has(data.date)) datesMap.set(data.date, {count:0, photos:[]});
-      datesMap.get(data.date).count++;
-      datesMap.get(data.date).photos.push({id:d.id,...data});
-    });
+    try {
+      const snap = await db.collection('photos').where('cidadeId','==',cidadeId).get();
+      const datesMap = new Map();
+      snap.forEach(d => {
+        const data = d.data();
+        if(!datesMap.has(data.date)) datesMap.set(data.date, {count:0});
+        datesMap.get(data.date).count++;
+      });
 
-    const dates = Array.from(datesMap.entries()).sort((a,b) => b[0].localeCompare(a[0]));
+      const dates = Array.from(datesMap.entries()).sort((a,b) => b[0].localeCompare(a[0]));
 
-    if(dates.length === 0){
-      content.innerHTML = '<div class="empty-state"><div class="icon">📅</div><h3>Nenhuma data encontrada</h3></div>';
-      return;
+      if(dates.length === 0){
+        content.innerHTML = '<div class="empty-state"><div class="icon">📅</div><h3>Nenhuma data encontrada</h3></div>';
+        return;
+      }
+
+      let html = '';
+      for(const [date, info] of dates){
+        html += '<div class="tree-item" onclick="openDate(\'' + cidadeId + '\',\'' + date + '\')">' +
+          '<div class="tree-item-header"><div>' +
+          '<div class="tree-item-title">📅 ' + formatDateBR(date) + '</div>' +
+          '<div class="tree-item-meta"><span>📸 ' + info.count + ' foto(s)</span></div>' +
+          '</div>' +
+          '<div class="tree-item-actions">' +
+          '<button class="btn-small btn-danger" onclick="event.stopPropagation();deleteDatePhotos(\'' + cidadeId + '\',\'' + date + '\')">🗑️</button>' +
+          '</div></div></div>';
+      }
+      content.innerHTML = html;
+    } catch(e) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar datas</h3></div>';
     }
-
-    let html = '';
-    for(const [date, info] of dates){
-      html += `<div class="tree-item" onclick="openDate('${cidadeId}','${date}')">
-        <div class="tree-item-header">
-          <div>
-            <div class="tree-item-title">📅 ${formatDateBR(date)}</div>
-            <div class="tree-item-meta"><span>📸 ${info.count} foto(s)</span></div>
-          </div>
-          <div class="tree-item-actions">
-            <button class="btn-small btn-danger" onclick="event.stopPropagation();deleteDatePhotos('${cidadeId}','${date}')">🗑️</button>
-          </div>
-        </div>
-      </div>`;
-    }
-    content.innerHTML = html;
 
   } else if(vistoriaState.view === 'photos'){
     const cidadeId = vistoriaState.cidadeId;
@@ -752,36 +1344,44 @@ async function renderVistorias(){
     const cidadeDoc = allCidadesCache.find(c => c.id === cidadeId);
     const cidadeName = cidadeDoc ? cidadeDoc.name : 'Cidade';
 
-    breadcrumb.innerHTML = `<a onclick="renderVistorias()">📁 Todas</a> <span>›</span> <a onclick="openCidade('${cidadeId}','${escapeHtml(cidadeName)}')">🏙️ ${escapeHtml(cidadeName)}</a> <span>›</span> <span>📅 ${formatDateBR(date)}</span>`;
+    breadcrumb.innerHTML = '<a onclick="backToCidades()">📁 Todas</a> <span>›</span> <a onclick="openCidade(\'' + cidadeId + '\',\'' + escapeHtml(cidadeName) + '\')">🏙️ ' + escapeHtml(cidadeName) + '</a> <span>›</span> <span>📅 ' + formatDateBR(date) + '</span>';
     content.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Carregando fotos...</div>';
 
-    const snap = await db.collection('photos').where('cidadeId','==',cidadeId).where('date','==',date).get();
-    const photos = [];
-    snap.forEach(d => photos.push({id:d.id,...d.data()}));
-    photos.sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
+    try {
+      const snap = await db.collection('photos').where('cidadeId','==',cidadeId).where('date','==',date).get();
+      const photos = [];
+      snap.forEach(d => photos.push({id:d.id,...d.data()}));
+      photos.sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
 
-    if(photos.length === 0){
-      content.innerHTML = '<div class="empty-state"><div class="icon">📸</div><h3>Nenhuma foto</h3></div>';
-      return;
-    }
+      if(photos.length === 0){
+        content.innerHTML = '<div class="empty-state"><div class="icon">📸</div><h3>Nenhuma foto</h3></div>';
+        return;
+      }
 
-    let html = '<div class="photo-grid">';
-    for(const p of photos){
-      html += `<div class="photo-item">
-        <img src="${p.url}" onclick="window.open('${p.url}','_blank')">
-        <div class="photo-item-info">
-          <div class="photo-item-name">${escapeHtml(p.filename||'Foto')}</div>
-          <div class="photo-item-date">👤 ${escapeHtml(p.employee||'-')}</div>
-        </div>
-        <div class="photo-item-actions">
-          <button class="btn-small btn-edit" onclick="renamePhoto('${p.id}','${escapeHtml(p.filename||'Foto')}')">✏️</button>
-          <button class="btn-small btn-danger" onclick="deletePhoto('${p.id}')">🗑️</button>
-        </div>
-      </div>`;
+      let html = '<div class="photo-grid">';
+      for(const p of photos){
+        html += '<div class="photo-item">' +
+          '<img src="' + p.url + '" onclick="window.open(\'' + p.url + '\',\'_blank\')">' +
+          '<div class="photo-item-info">' +
+          '<div class="photo-item-name">' + escapeHtml(p.filename||'Foto') + '</div>' +
+          '<div class="photo-item-date">👤 ' + escapeHtml(p.employee||'-') + '</div>' +
+          '</div>' +
+          '<div class="photo-item-actions">' +
+          '<button class="btn-small btn-edit" onclick="renamePhoto(\'' + p.id + '\',\'' + escapeHtml(p.filename||'Foto') + '\')">✏️</button>' +
+          '<button class="btn-small btn-danger" onclick="deletePhoto(\'' + p.id + '\')">🗑️</button>' +
+          '</div></div>';
+      }
+      html += '</div>';
+      content.innerHTML = html;
+    } catch(e) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar fotos</h3></div>';
     }
-    html += '</div>';
-    content.innerHTML = html;
   }
+}
+
+function backToCidades(){
+  vistoriaState = { view: 'cidades', cidadeId: null, date: null };
+  renderVistorias();
 }
 
 function openCidade(id, name){
@@ -800,17 +1400,10 @@ function clearVistoriaFilters(){
   renderVistorias();
 }
 
-// ===== CRUD CIDADES =====
 function showCreateCidadeModal(){
   document.getElementById('modalTitle').textContent = '➕ Nova Cidade / Obra';
-  document.getElementById('modalBody').innerHTML = `
-    <input type="text" id="modalCidade" placeholder="Nome da Cidade">
-    <input type="text" id="modalObra" placeholder="Nome da Obra">
-  `;
-  document.getElementById('modalActions').innerHTML = `
-    <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
-    <button class="btn-primary" onclick="createCidade()">Criar</button>
-  `;
+  document.getElementById('modalBody').innerHTML = '<input type="text" id="modalCidade" placeholder="Nome da Cidade"><input type="text" id="modalObra" placeholder="Nome da Obra">';
+  document.getElementById('modalActions').innerHTML = '<button class="btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn-primary" onclick="createCidade()">Criar</button>';
   document.getElementById('modalOverlay').classList.add('show');
 }
 
@@ -828,28 +1421,21 @@ async function createCidade(){
   closeModal();
   showToast('Cidade/Obra criada!','success');
   renderVistorias();
-  loadCidadesList();
+  loadCidadesForUpload();
 }
 
 function renameCidade(id, oldName, oldObra){
   document.getElementById('modalTitle').textContent = '✏️ Renomear Cidade/Obra';
-  document.getElementById('modalBody').innerHTML = `
-    <input type="text" id="modalCidade" value="${escapeHtml(oldName)}" placeholder="Cidade">
-    <input type="text" id="modalObra" value="${escapeHtml(oldObra)}" placeholder="Obra">
-  `;
-  document.getElementById('modalActions').innerHTML = `
-    <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
-    <button class="btn-primary" onclick="doRenameCidade('${id}')">Salvar</button>
-  `;
+  document.getElementById('modalBody').innerHTML = '<input type="text" id="modalCidade" value="' + escapeHtml(oldName) + '" placeholder="Cidade"><input type="text" id="modalObra" value="' + escapeHtml(oldObra) + '" placeholder="Obra">';
+  document.getElementById('modalActions').innerHTML = '<button class="btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn-primary" onclick="doRenameCidade(\'' + id + '\')">Salvar</button>';
   document.getElementById('modalOverlay').classList.add('show');
 }
 
 async function doRenameCidade(id){
   const cidade = document.getElementById('modalCidade').value.trim();
   const obra = document.getElementById('modalObra').value.trim();
-  if(!cidade){ showToast('Cidade é obrigatória','error'); return; }
+  if(!cidade){ showToast('Cidade e obrigatoria','error'); return; }
   await db.collection('cidades').doc(id).update({name: cidade, obra: obra});
-  // Atualizar fotos também
   const snap = await db.collection('photos').where('cidadeId','==',id).get();
   const batch = db.batch();
   snap.forEach(d => batch.update(d.ref, {cidade: cidade, obra: obra}));
@@ -857,28 +1443,28 @@ async function doRenameCidade(id){
   closeModal();
   showToast('Renomeado com sucesso!','success');
   renderVistorias();
-  loadCidadesList();
+  loadCidadesForUpload();
 }
 
 async function deleteCidade(id){
-  if(!confirm('Tem certeza? TODAS as fotos desta cidade serão excluídas permanentemente!')) return;
+  if(!confirm('Tem certeza? TODAS as fotos desta cidade serao excluidas permanentemente!')) return;
   const snap = await db.collection('photos').where('cidadeId','==',id).get();
   const batch = db.batch();
   snap.forEach(d => batch.delete(d.ref));
   batch.delete(db.collection('cidades').doc(id));
   await batch.commit();
-  showToast('Cidade e fotos excluídas!','success');
+  showToast('Cidade e fotos excluidas!','success');
   renderVistorias();
-  loadCidadesList();
+  loadCidadesForUpload();
 }
 
 async function deleteDatePhotos(cidadeId, date){
-  if(!confirm(`Excluir TODAS as fotos de ${formatDateBR(date)}?`)) return;
+  if(!confirm('Excluir TODAS as fotos de ' + formatDateBR(date) + '?')) return;
   const snap = await db.collection('photos').where('cidadeId','==',cidadeId).where('date','==',date).get();
   const batch = db.batch();
   snap.forEach(d => batch.delete(d.ref));
   await batch.commit();
-  showToast('Fotos da data excluídas!','success');
+  showToast('Fotos da data excluidas!','success');
   openCidade(cidadeId, '');
 }
 
@@ -893,11 +1479,10 @@ async function renamePhoto(id, oldName){
 async function deletePhoto(id){
   if(!confirm('Excluir esta foto permanentemente?')) return;
   await db.collection('photos').doc(id).delete();
-  showToast('Foto excluída!','success');
+  showToast('Foto excluida!','success');
   renderVistorias();
 }
 
-// ===== DOWNLOAD =====
 async function loadDownloadFilters(){
   const employeeSel = document.getElementById('dlEmployee');
   const cidadeSel = document.getElementById('dlCidade');
@@ -915,10 +1500,10 @@ async function loadDownloadFilters(){
   });
 
   Array.from(employees).sort().forEach(e => {
-    employeeSel.innerHTML += `<option value="${escapeHtml(e)}">${escapeHtml(e)}</option>`;
+    employeeSel.innerHTML += '<option value="' + escapeHtml(e) + '">' + escapeHtml(e) + '</option>';
   });
   Array.from(cidades).sort().forEach(c => {
-    cidadeSel.innerHTML += `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`;
+    cidadeSel.innerHTML += '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
   });
 
   renderDownload();
@@ -934,12 +1519,11 @@ async function onDlCidadeChange(){
   dateSel.innerHTML = '<option value="">Todas</option>';
 
   if(cidade){
-    let q = db.collection('photos').where('cidade','==',cidade);
-    const snap = await q.get();
+    const snap = await db.collection('photos').where('cidade','==',cidade).get();
     const dates = new Set();
     snap.forEach(d => { const data=d.data(); if(data.date) dates.add(data.date); });
     Array.from(dates).sort().reverse().forEach(d => {
-      dateSel.innerHTML += `<option value="${d}">${formatDateBR(d)}</option>`;
+      dateSel.innerHTML += '<option value="' + d + '">' + formatDateBR(d) + '</option>';
     });
   }
   renderDownload();
@@ -973,15 +1557,14 @@ async function renderDownload(){
   let html = '<div class="photo-grid download-grid">';
   for(const p of photos){
     const selected = selectedPhotos.has(p.id);
-    html += `<div class="photo-item ${selected?'selected':''}" onclick="togglePhoto('${p.id}')">
-      <div class="check">✓</div>
-      <img src="${p.url}">
-      <div class="photo-item-info">
-        <div class="photo-item-name">${escapeHtml(p.filename||'Foto')}</div>
-        <div class="photo-item-date">🏙️ ${escapeHtml(p.cidade||'-')} | 📅 ${formatDateBR(p.date)}</div>
-        <div class="photo-item-date">👤 ${escapeHtml(p.employee||'-')}</div>
-      </div>
-    </div>`;
+    html += '<div class="photo-item ' + (selected?'selected':'') + '" onclick="togglePhoto(\'' + p.id + '\')">' +
+      '<div class="check">✓</div>' +
+      '<img src="' + p.url + '">' +
+      '<div class="photo-item-info">' +
+      '<div class="photo-item-name">' + escapeHtml(p.filename||'Foto') + '</div>' +
+      '<div class="photo-item-date">🏙️ ' + escapeHtml(p.cidade||'-') + ' | 📅 ' + formatDateBR(p.date) + '</div>' +
+      '<div class="photo-item-date">👤 ' + escapeHtml(p.employee||'-') + '</div>' +
+      '</div></div>';
   }
   html += '</div>';
   content.innerHTML = html;
@@ -1008,7 +1591,7 @@ function updateDlActions(){
   const actions = document.getElementById('downloadActions');
   if(selectedPhotos.size > 0){
     actions.classList.add('show');
-    document.getElementById('dlCount').textContent = `${selectedPhotos.size} selecionada(s)`;
+    document.getElementById('dlCount').textContent = selectedPhotos.size + ' selecionada(s)';
   } else {
     actions.classList.remove('show');
   }
@@ -1018,7 +1601,7 @@ async function downloadSelected(){
   const photos = allPhotosCache.filter(p => selectedPhotos.has(p.id));
   if(photos.length === 0) return;
 
-  showToast(`Baixando ${photos.length} foto(s)...`,'success');
+  showToast('Baixando ' + photos.length + ' foto(s)...','success');
 
   for(const p of photos){
     try {
@@ -1037,10 +1620,9 @@ async function downloadSelected(){
       console.error('Download error:', e);
     }
   }
-  showToast('Download concluído!','success');
+  showToast('Download concluido!','success');
 }
 
-// ===== PROFILE =====
 async function updateDisplayName(){
   const name = document.getElementById('newDisplayName').value.trim();
   if(!name){ showToast('Digite um nome','error'); return; }
@@ -1053,20 +1635,19 @@ async function updateDisplayName(){
 
 function sendPasswordReset(){
   auth.sendPasswordResetEmail(currentUser.email).then(()=>{
-    showToast('E-mail de redefinição enviado!','success');
+    showToast('E-mail de redefinicao enviado!','success');
   }).catch(e=>{
     showToast(translateError(e.code),'error');
   });
 }
 
 function confirmDeleteAccount(){
-  if(!confirm('ATENÇÃO: Sua conta e TODOS os seus dados serão permanentemente excluídos. Continuar?')) return;
+  if(!confirm('ATENCAO: Sua conta e TODOS os seus dados serao permanentemente excluidos. Continuar?')) return;
   const senha = prompt('Digite sua senha para confirmar:');
-  if(!senha){ showToast('Senha não informada','error'); return; }
+  if(!senha){ showToast('Senha nao informada','error'); return; }
 
   const cred = firebase.auth.EmailAuthProvider.credential(currentUser.email, senha);
   currentUser.reauthenticateWithCredential(cred).then(()=>{
-    // Deletar dados
     return db.collection('photos').where('createdBy','==',currentUser.uid).get().then(snap=>{
       const batch = db.batch();
       snap.forEach(d => batch.delete(d.ref));
@@ -1077,29 +1658,9 @@ function confirmDeleteAccount(){
       return currentUser.delete();
     });
   }).then(()=>{
-    showToast('Conta excluída com sucesso','success');
+    showToast('Conta excluida com sucesso','success');
   }).catch(e=>{
     showToast(translateError(e.code)||'Erro ao excluir conta','error');
-  });
-}
-
-// ===== HELPERS =====
-function loadCidadesList(){
-  if(!db) return;
-  db.collection('cidades').get().then(snap => {
-    const cidadesList = document.getElementById('cidadesList');
-    const obrasList = document.getElementById('obrasList');
-    cidadesList.innerHTML = '';
-    obrasList.innerHTML = '';
-    const cidades = new Set();
-    const obras = new Set();
-    snap.forEach(d => {
-      const data = d.data();
-      if(data.name) cidades.add(data.name);
-      if(data.obra) obras.add(data.obra);
-    });
-    cidades.forEach(c => cidadesList.innerHTML += `<option value="${escapeHtml(c)}">`);
-    obras.forEach(o => obrasList.innerHTML += `<option value="${escapeHtml(o)}">`);
   });
 }
 
@@ -1116,7 +1677,7 @@ function formatDate(iso){
 function formatDateBR(dateStr){
   if(!dateStr) return '-';
   const parts = dateStr.split('-');
-  if(parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  if(parts.length === 3) return parts[2] + '/' + parts[1] + '/' + parts[0];
   return dateStr;
 }
 
@@ -1127,10 +1688,10 @@ function escapeHtml(text){
   return div.innerHTML;
 }
 
-function showToast(msg, type='success'){
+function showToast(msg, type){
   const toast = document.getElementById('toast');
   toast.textContent = msg;
-  toast.className = 'toast ' + type;
+  toast.className = 'toast ' + (type||'success');
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
@@ -1140,7 +1701,6 @@ function closeModal(e){
   document.getElementById('modalOverlay').classList.remove('show');
 }
 
-// Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape') closeModal();
 });
