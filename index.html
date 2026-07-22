@@ -1110,3 +1110,66 @@ onAuthStateChanged(auth, (user) => {
 </script>
 </body>
 </html>
+
+
+// ===== UTILITIES =====
+function formatDateBR(dateStr) {
+  if (!dateStr || dateStr === 'Sem data') return 'Sem data';
+  const parts = dateStr.split('-');
+  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return dateStr;
+}
+
+function getAuthErrorMessage(code) {
+  const msgs = {
+    'auth/invalid-email': 'Email inválido',
+    'auth/user-disabled': 'Conta desativada',
+    'auth/user-not-found': 'Usuário não encontrado',
+    'auth/wrong-password': 'Senha incorreta',
+    'auth/email-already-in-use': 'Email já cadastrado',
+    'auth/weak-password': 'Senha muito fraca',
+    'auth/invalid-credential': 'Credenciais inválidas (verifique email e senha)',
+    'auth/invalid-login-credentials': 'Email ou senha incorretos',
+    'auth/network-request-failed': 'Erro de rede - verifique sua conexão',
+    'auth/too-many-requests': 'Muitas tentativas. Tente novamente mais tarde.',
+    'auth/unauthorized-domain': 'Domínio não autorizado. Contate o administrador.',
+    'auth/invalid-api-key': 'Chave de API inválida. Contate o administrador.'
+  };
+  return msgs[code] || ('Erro: ' + code);
+}
+
+function showToast(message, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function updateHeaderUserInfo() {
+  if (currentUser) {
+    document.getElementById('headerUserName').textContent = currentUser.displayName || 'Usuário';
+    document.getElementById('headerUserEmail').textContent = currentUser.email;
+  }
+}
+
+// ===== AUTH STATE =====
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    updateHeaderUserInfo();
+    document.getElementById('appHeader').style.display = 'block';
+    showDashboard();
+    console.log("User logged in:", user.email);
+  } else {
+    currentUser = null;
+    document.getElementById('appHeader').style.display = 'none';
+    hideAllScreens();
+    document.getElementById('loginScreen').classList.remove('hidden');
+    console.log("No user logged in");
+  }
+});
+
+console.log("App loaded, waiting for auth state...");
+</script>
+</body>
+</html>
