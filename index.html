@@ -621,7 +621,7 @@ body{background:#f0f2f5}
       <span class="eye">👁️</span>
       <div>
         <h1>VisãoGIGOVMR</h1>
-        <span>Repositório de Fotos — Caixa Econômica</span>
+        <span>Repositório de Fotos</span>
       </div>
     </div>
     <div class="header-actions">
@@ -632,7 +632,7 @@ body{background:#f0f2f5}
   </div>
   <div class="header-user">
     <span id="headerEmail">Usuário</span>
-    <span>🏛️ Caixa Econômica Federal</span>
+    
   </div>
 </div>
 
@@ -641,10 +641,10 @@ body{background:#f0f2f5}
   <div class="auth-box">
     <div class="eye">👁️</div>
     <h1>VisãoGIGOVMR</h1>
-    <p class="subtitle">Repositório de Fotos — Caixa Econômica Federal</p>
+    <p class="subtitle">Repositório de Fotos Federal</p>
     <input type="email" id="loginEmail" placeholder="E-mail">
     <input type="password" id="loginPassword" placeholder="Senha">
-    <button onclick="login()">Entrar</button>
+    <button type="button" onclick="login()">Entrar</button>
     <p class="link" onclick="showRegister()">Criar nova conta</p>
     <p id="loginError" class="error"></p>
   </div>
@@ -655,12 +655,12 @@ body{background:#f0f2f5}
   <div class="auth-box">
     <div class="eye">👁️</div>
     <h1>Criar Conta</h1>
-    <p class="subtitle">VisãoGIGOVMR — Caixa Econômica Federal</p>
+    <p class="subtitle">VisãoGIGOVMR</p>
     <input type="text" id="regName" placeholder="Nome completo">
     <input type="email" id="regEmail" placeholder="E-mail">
     <input type="password" id="regPassword" placeholder="Senha (mín. 6 caracteres)">
     <input type="password" id="regPassword2" placeholder="Confirmar senha">
-    <button onclick="register()">Cadastrar</button>
+    <button type="button" onclick="register()">Cadastrar</button>
     <p class="link" onclick="showLogin()">Já tenho conta</p>
     <p id="regError" class="error"></p>
   </div>
@@ -957,6 +957,7 @@ function login(){
   const pass = document.getElementById('loginPassword').value;
   const err = document.getElementById('loginError');
   if(!email||!pass){ err.textContent='Preencha e-mail e senha'; return; }
+  if(!auth){ err.textContent='Erro: Firebase não inicializado. Recarregue a página.'; return; }
   auth.signInWithEmailAndPassword(email,pass).catch(e=>{
     err.textContent = translateError(e.code);
   });
