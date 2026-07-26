@@ -611,6 +611,7 @@ body{background:#f0f2f5}
   .tree-children{padding-left:15px}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -641,7 +642,7 @@ body{background:#f0f2f5}
   <div class="auth-box">
     <div class="eye">👁️</div>
     <h1>VisãoGIGOVMR</h1>
-    <p class="subtitle">Repositório de Fotos</p>
+    <p class="subtitle">Repositório de Fotos Federal</p>
     <input type="email" id="loginEmail" placeholder="E-mail">
     <input type="password" id="loginPassword" placeholder="Senha">
     <button type="button" onclick="login()">Entrar</button>
@@ -1064,11 +1065,53 @@ function onObraChange(){
   }
 }
 
-function previewPhotos(){
+
+// ============================================
+// VALIDAÇÃO DE IMAGEM
+// ============================================
+const ALLOWED_EXTENSIONS = ['jpg','jpeg','png','gif','webp','bmp','heic'];
+const ALLOWED_MIME_TYPES = ['image/jpeg','image/png','image/gif','image/webp','image/bmp','image/heic','image/heif'];
+
+async function validateImage(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(!ALLOWED_EXTENSIONS.includes(ext)){
+    return {valid:false, reason:'Extensão não permitida: .' + ext};
+  }
+  if(!ALLOWED_MIME_TYPES.includes(file.type)){
+    return {valid:false, reason:'Tipo de arquivo não permitido: ' + file.type};
+  }
+  // Verificar magic bytes (assinatura binária)
+  const arr = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+  const isJPEG = arr[0] === 0xFF && arr[1] === 0xD8;
+  const isPNG = arr[0] === 0x89 && arr[1] === 0x50 && arr[2] === 0x4E && arr[3] === 0x47;
+  const isGIF = arr[0] === 0x47 && arr[1] === 0x49 && arr[2] === 0x46;
+  const isWEBP = arr[0] === 0x52 && arr[1] === 0x49 && arr[2] === 0x46 && arr[3] === 0x46;
+  const isBMP = arr[0] === 0x42 && arr[1] === 0x4D;
+  if(!isJPEG && !isPNG && !isGIF && !isWEBP && !isBMP){
+    return {valid:false, reason:'Arquivo não é uma imagem válida'};
+  }
+  return {valid:true};
+}
+
+async function previewPhotos(){
   const input = document.getElementById('uploadPhotos');
   const preview = document.getElementById('photoPreview');
-  uploadFiles = Array.from(input.files);
+  const files = Array.from(input.files);
+  uploadFiles = [];
   preview.innerHTML = '';
+  let invalidCount = 0;
+  for(const file of files){
+    const check = await validateImage(file);
+    if(!check.valid){
+      invalidCount++;
+      showToast(file.name + ': ' + check.reason, 'error');
+      continue;
+    }
+    uploadFiles.push(file);
+  }
+  if(invalidCount > 0){
+    showToast(invalidCount + ' arquivo(s) rejeitado(s). Apenas imagens são permitidas.', 'error');
+  }
   uploadFiles.forEach((file,i)=>{
     const reader = new FileReader();
     reader.onload = e => {
@@ -1167,6 +1210,8 @@ async function submitUpload(){
 
   for(const file of uploadFiles){
     try {
+      const check = await validateImage(file);
+      if(!check.valid){ showToast(file.name + ': ' + check.reason, 'error'); continue; }
       let metadata = null;
       if(includeMetadata){
         metadata = await extractMetadata(file);
@@ -1602,26 +1647,41 @@ async function downloadSelected(){
   const photos = allPhotosCache.filter(p => selectedPhotos.has(p.id));
   if(photos.length === 0) return;
 
-  showToast('Baixando ' + photos.length + ' foto(s)...','success');
+  showToast('Compactando ' + photos.length + ' foto(s)...','success');
 
-  for(const p of photos){
+  const zip = new JSZip();
+  const folderName = 'vistoria_' + (photos[0].cidade||'sem_cidade').replace(/\s+/g,'_') + '_' + (photos[0].date||'sem_data');
+  const folder = zip.folder(folderName);
+
+  let successCount = 0;
+  for(let i = 0; i < photos.length; i++){
+    const p = photos[i];
     try {
       const res = await fetch(p.url);
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = p.filename || 'foto.jpg';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      await new Promise(r => setTimeout(r, 300));
+      const ext = (p.filename||'foto.jpg').split('.').pop();
+      const fileName = (p.employee||'empregado').replace(/\s+/g,'_') + '_' + (p.date||'data') + '_' + (i+1) + '.' + ext;
+      folder.file(fileName, blob);
+      successCount++;
     } catch(e) {
       console.error('Download error:', e);
     }
   }
-  showToast('Download concluido!','success');
+
+  try {
+    const content = await zip.generateAsync({type:'blob'});
+    const url = URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = folderName + '.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast(successCount + ' foto(s) baixadas em ZIP!','success');
+  } catch(e) {
+    showToast('Erro ao criar ZIP','error');
+  }
 }
 
 async function updateDisplayName(){
